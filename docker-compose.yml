@@ -31,7 +31,7 @@ services:
     build: ./frontend
     container_name: angular-app
     ports:
-      - "4201:4200"
+      - "4201:4201"
     volumes:
       - ./frontend:/app
       - /app/node_modules
