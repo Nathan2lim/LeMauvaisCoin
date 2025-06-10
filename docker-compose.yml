@@ -1,0 +1,86 @@
+services:
+  # Laravel (PHP + Composer + artisan)
+  laravel:
+    build: ./backend
+    container_name: laravel-app
+    ports:
+      - "9000:8000"
+    volumes:
+      - ./backend:/var/www
+      - /var/www/vendor
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=mysql
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - FORCE_INSTALL=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  # Angular
+  angular:
+    build: ./frontend
+    container_name: angular-app
+    ports:
+      - "4201:4201"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+    environment:
+      - FORCE_INSTALL=true
+      - NG_CLI_ANALYTICS=false
+    networks:
+      - app-network
+
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: lmc-mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # PHPMyAdmin - Désactivé temporairement en raison de problèmes de compatibilité
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin:latest
+  #   container_name: Phpmyadmin
+  #   restart: always
+  #   platform: linux/arm64
+  #   ports:
+  #     - "8081:80"
+  #   environment:
+  #     PMA_HOST: mysql
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
