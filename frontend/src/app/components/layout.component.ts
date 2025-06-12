@@ -12,10 +12,10 @@ import { Component } from '@angular/core';
             </div>
             <nav>
               <ul>
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">Déposer une annonce</a></li>
-                <li><a href="#">Catégories</a></li>
-                <li><a href="#">Mon compte</a></li>
+                <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
+                <li><a routerLink="/listings" routerLinkActive="active">Annonces</a></li>
+                <li><a routerLink="/create" routerLinkActive="active">Déposer une annonce</a></li>
+                <li><a href="#" class="disabled">Mon compte</a></li>
               </ul>
             </nav>
           </div>
@@ -43,7 +43,7 @@ import { Component } from '@angular/core';
             </div>
             <div class="footer-section">
               <h3>Contact</h3>
-              <p>Email: contact@lemauvaiscoin.fr</p>
+              <p>Email: contact&#64;lemauvaiscoin.fr</p>
               <p>Tél: +33 1 23 45 67 89</p>
             </div>
           </div>
@@ -92,16 +92,26 @@ import { Component } from '@angular/core';
     nav li {
       margin-left: 20px;
     }
-    
-    nav a {
+     nav a {
       color: white;
       text-decoration: none;
       font-weight: 500;
       transition: opacity 0.2s;
     }
-    
+
     nav a:hover {
       opacity: 0.8;
+    }
+
+    nav a.active {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 15px;
+      border-radius: 20px;
+    }
+
+    nav a.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     
     main {
