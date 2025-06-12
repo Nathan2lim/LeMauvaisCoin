@@ -1,8 +1,29 @@
 services:
+  # Application frontend et backend consolidée pour nginx-proxy externe
+  app:
+    image: nginx:alpine
+    container_name: lmc-app
+    expose:
+      - "80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./backend:/var/www
+    depends_on:
+      - laravel
+      - angular
+    networks:
+      - app-network
+      - sharewheels_default  # Se connecte au réseau du proxy externe
+    environment:
+      - VIRTUAL_HOST=lemauvaiscoin.sherwheels.fr
+      - LETSENCRYPT_HOST=lemauvaiscoin.sherwheels.fr
+      - LETSENCRYPT_EMAIL=contact@sherwheels.fr  # Même adresse que la configuration existante
+      
   # Laravel (PHP + Composer + artisan)
   laravel:
     build: ./backend
     container_name: laravel-app
+    # En production, ces ports ne seront pas exposés directement
     ports:
       - "9000:8000"
     volumes:
@@ -81,6 +102,8 @@ services:
 networks:
   app-network:
     driver: bridge
+  sharewheels_default:
+    external: true  # Ce réseau existe déjà et est utilisé par nginx-proxy
 
 volumes:
   dbdata:
