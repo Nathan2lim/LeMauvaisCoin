@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -7,22 +8,27 @@ import { ApiService } from '../services/api.service';
     <div class="listings-container">
       <div class="listings-header">
         <h2>Annonces Récentes</h2>
-        <div class="filter-bar">
-          <select class="filter-select">
-            <option value="">Toutes les catégories</option>
-            <option value="vehicules">Véhicules</option>
-            <option value="immobilier">Immobilier</option>
-            <option value="multimedia">Multimédia</option>
-            <option value="maison">Maison</option>
-            <option value="loisirs">Loisirs</option>
-          </select>
-          <select class="filter-select">
-            <option value="">Prix: Tous</option>
-            <option value="price_asc">Prix: Croissant</option>
-            <option value="price_desc">Prix: Décroissant</option>
-            <option value="date_desc">Date: Plus récentes</option>
-            <option value="date_asc">Date: Plus anciennes</option>
-          </select>
+        <div class="header-actions">
+          <div class="filter-bar">
+            <select class="filter-select">
+              <option value="">Toutes les catégories</option>
+              <option value="vehicules">Véhicules</option>
+              <option value="immobilier">Immobilier</option>
+              <option value="multimedia">Multimédia</option>
+              <option value="maison">Maison</option>
+              <option value="loisirs">Loisirs</option>
+            </select>
+            <select class="filter-select">
+              <option value="">Prix: Tous</option>
+              <option value="price_asc">Prix: Croissant</option>
+              <option value="price_desc">Prix: Décroissant</option>
+              <option value="date_desc">Date: Plus récentes</option>
+              <option value="date_asc">Date: Plus anciennes</option>
+            </select>
+          </div>
+          <button class="create-button" (click)="navigateToCreate()">
+            + Déposer une annonce
+          </button>
         </div>
       </div>
       
@@ -41,7 +47,7 @@ import { ApiService } from '../services/api.service';
       </div>
       
       <div class="listings-grid" *ngIf="!loading && !error">
-        <div *ngFor="let listing of listings" class="listing-card">
+        <div *ngFor="let listing of listings" class="listing-card" (click)="viewListing(listing.id)">
           <div class="listing-image">
             <div class="placeholder-image">{{ listing.title[0] }}</div>
           </div>
@@ -52,7 +58,7 @@ import { ApiService } from '../services/api.service';
               <p class="price">{{ listing.price }}€</p>
               <p class="date">{{ formatDate(listing.created_at) }}</p>
             </div>
-            <button class="contact-button">Contacter le vendeur</button>
+            <button class="contact-button" (click)="contactSeller($event, listing)">Contacter le vendeur</button>
           </div>
         </div>
         
@@ -82,16 +88,43 @@ import { ApiService } from '../services/api.service';
       justify-content: space-between;
       align-items: center;
       margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
     
     .listings-header h2 {
       color: #2c3e50;
       margin: 0;
     }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
     
     .filter-bar {
       display: flex;
       gap: 15px;
+    }
+
+    .create-button {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .create-button:hover {
+      background: #c0392b;
+      transform: translateY(-2px);
     }
     
     .filter-select {
@@ -315,7 +348,10 @@ export class ListingsComponent implements OnInit {
   error: boolean = false;
   currentPage: number = 1;
 
-  constructor(private apiService: ApiService) { }
+  constructor(
+    private apiService: ApiService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadListings();
@@ -336,6 +372,19 @@ export class ListingsComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  viewListing(listingId: string): void {
+    this.router.navigate(['/listing', listingId]);
+  }
+
+  contactSeller(event: Event, listing: any): void {
+    event.stopPropagation(); // Prevent navigation when clicking the contact button
+    alert(`Contacter le vendeur pour: ${listing.title}`);
+  }
+
+  navigateToCreate(): void {
+    this.router.navigate(['/create']);
   }
 
   formatDate(dateString: string): string {
