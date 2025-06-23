@@ -3,18 +3,14 @@ set -e
 
 cd /app
 
-# Install dependencies if node_modules doesn't exist or force reinstall
-if [ ! -d "node_modules" ] || [ "$FORCE_INSTALL" = "true" ]; then
-    echo "Installing dependencies..."
-    npm install
-    # Ensure @angular-devkit/build-angular is installed
-    if [ ! -d "node_modules/@angular-devkit/build-angular" ]; then
-        echo "Installing @angular-devkit/build-angular explicitly..."
-        npm install @angular-devkit/build-angular --save-dev
-    fi
-else
-    echo "Dependencies already installed."
-fi
+# Always install dependencies to ensure everything is up to date
+echo "Installing dependencies..."
+# Force clean install to avoid any issues
+rm -rf node_modules
+npm install
+# Ensure @angular-devkit/build-angular is installed with the exact version needed
+echo "Installing @angular-devkit/build-angular explicitly..."
+npm install @angular-devkit/build-angular@16.0.0 --save-dev
 
 # Check if Angular CLI is installed globally
 if ! command -v ng &> /dev/null; then

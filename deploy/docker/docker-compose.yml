@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Service PHP/Symfony
+  symfony:
+    build:
+      context: ../../
+      dockerfile: deploy/docker/Dockerfile
+    container_name: lmc_symfony_app
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ../../backend:/var/www/html
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "mysql://root:root@db:3306/symfony_db?serverVersion=mariadb-10.11.11"
+      APP_ENV: dev
+      APP_SECRET: ${APP_SECRET:-4e045ec7a8992986d7a33074e2cccee5}
+      JWT_SECRET_KEY: '%kernel.project_dir%/config/jwt/private.pem'
+      JWT_PUBLIC_KEY: '%kernel.project_dir%/config/jwt/public.pem'
+      JWT_PASSPHRASE: ${JWT_PASSPHRASE:-lemauvaiscoin}
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+    networks:
+      - app_network
+
+  # Service Angular
+  angular:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: lmc_angular_app
+    restart: unless-stopped
+    volumes:
+      - ../../frontend:/app
+    ports:
+      - "4200:4201"
+    environment:
+      - FORCE_INSTALL=true
+      - NODE_ENV=development
+    networks:
+      - app_network
+
+  # Service MariaDB
+  db:
+    image: mariadb:10.11.11
+    container_name: lmc_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./mysqldata:/var/lib/mysql
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "3308:3306"
+    networks:
+      - app_network
+
+  # Service nginx
+  nginx:
+    image: nginx:alpine
+    container_name: lmc_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../../nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - symfony
+      - angular
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
