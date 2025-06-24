@@ -34,6 +34,7 @@ services:
     restart: unless-stopped
     volumes:
       - ../../frontend:/app
+      - node_modules_cache:/app/node_modules
     ports:
       - "4200:4201"
     environment:
@@ -79,3 +80,6 @@ services:
 networks:
   app_network:
     driver: bridge
+
+volumes:
+  node_modules_cache:

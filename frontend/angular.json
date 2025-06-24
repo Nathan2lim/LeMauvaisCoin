@@ -26,13 +26,31 @@
               "src/styles.css"
             ],
             "scripts": []
+          },
+          "configurations": {
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "lemauvaiscoin-frontend:build",
-            "port": 4201
+            "port": 4201,
+            "host": "0.0.0.0",
+            "poll": 2000,
+            "liveReload": true
+          },
+          "configurations": {
+            "development": {
+              "browserTarget": "lemauvaiscoin-frontend:build:development"
+            }
           }
         }
       }

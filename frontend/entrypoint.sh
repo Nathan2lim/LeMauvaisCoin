@@ -3,14 +3,21 @@ set -e
 
 cd /app
 
-# Always install dependencies to ensure everything is up to date
-echo "Installing dependencies..."
-# Force clean install to avoid any issues
-rm -rf node_modules
-npm install
-# Ensure @angular-devkit/build-angular is installed with the exact version needed
-echo "Installing @angular-devkit/build-angular explicitly..."
-npm install @angular-devkit/build-angular@16.0.0 --save-dev
+# Check if node_modules exists in the volume, if not install dependencies
+if [ ! -d "node_modules" ] || [ ! -f "node_modules/.install-state" ]; then
+    echo "Installing dependencies..."
+    npm install
+    # Create a marker file to indicate successful installation
+    touch node_modules/.install-state
+else
+    echo "Dependencies already installed, checking for updates..."
+    # Only check for new dependencies if package.json is newer than the install state
+    if [ "package.json" -nt "node_modules/.install-state" ]; then
+        echo "Package.json updated, installing new dependencies..."
+        npm install
+        touch node_modules/.install-state
+    fi
+fi
 
 # Check if Angular CLI is installed globally
 if ! command -v ng &> /dev/null; then
@@ -18,6 +25,6 @@ if ! command -v ng &> /dev/null; then
     npm install -g @angular/cli
 fi
 
-# Start Angular development server
-echo "Starting Angular development server..."
-npm start -- --host 0.0.0.0
+# Start Angular development server with file watching enabled
+echo "Starting Angular development server with file watching..."
+npm run start:watch
