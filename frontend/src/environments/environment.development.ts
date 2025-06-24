@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:9000/api'  // URL pour accès depuis le navigateur
+  apiUrl: 'http://localhost:8000/api'  // URL pour accès depuis le navigateur
 };
