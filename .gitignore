@@ -63,3 +63,4 @@ Thumbs.db
 # Docker
 .docker-volumes/
 docker-compose.override.yml
+deploy/docker/mysqldata/
