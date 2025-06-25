@@ -20,7 +20,7 @@ security:
             jwt: ~
 
         education_nationale_api:
-            pattern: ^/api/education-nationale
+            pattern: ^/api/
             stateless: true
             custom_authenticators:
                 - App\Security\ApiKeyAuthenticator
@@ -39,7 +39,7 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        - { path: ^/api/education-nationale, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: PUBLIC_ACCESS }
 
 when@test:

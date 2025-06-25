@@ -10,5 +10,4 @@ api_platform:
                 type: header
         swagger_ui_extra_configuration:
             persistAuthorization: true
-    defaults:
-        route_prefix: '/api'
+    # Suppression du route_prefix pour éviter la duplication avec le préfix défini dans config/routes/api_platform.yaml
