@@ -1,0 +1,29 @@
+.favorites-container {
+  padding: 20px;
+  margin: 0 auto;
+}
+app-fav-card {
+    width: 90%;
+    max-width: 1200px;
+}
+.favorites-container h1 {
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.no-favorites {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-favorites h3 {
+  font-size: 1.4rem;
+  margin-bottom: 3rem;
+}

@@ -14,10 +14,11 @@
         <label for="email" class="required">Email</label>
         <input 
           id="email" 
-          type="email" 
+          type="email"
           [formControl]="emailControl" 
           class="form-control" 
           placeholder="exemple@email.com"
+          autocomplete="email"
           required>
       </div>
 
@@ -29,6 +30,7 @@
           [formControl]="passwordControl" 
           class="form-control" 
           placeholder="Votre mot de passe"
+          autocomplete="current-password"
           required>
       </div>
 

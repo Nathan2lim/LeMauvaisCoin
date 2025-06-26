@@ -7,7 +7,7 @@ import { ApiService } from './services/api.service';
     <router-outlet></router-outlet>
   `,
   styles: [
-    `::ng-deep app-login {
+    `::ng-deep app-login, ::ng-deep app-register {
       display: flex;
       justify-content: space-between;
       width: 100%;

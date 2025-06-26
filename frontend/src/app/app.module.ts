@@ -8,14 +8,22 @@ import { ListingsComponent } from './components/listings.component';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
-import { ErrorMessageComponent } from './shared/error-message/error-message.component'
+import { ErrorMessageComponent } from './shared/error-message/error-message.component';
+import { RegisterComponent } from './components/register/register.component';
+import { FavButtonComponent } from './shared/fav-button/fav-button.component';
+import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
+import { FavorisComponent } from './components/favoris/favoris.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     ListingsComponent,
     LoginComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    RegisterComponent,
+    FavButtonComponent,
+    FavCardComponent,
+    FavorisComponent
   ],
   imports: [
     BrowserModule,

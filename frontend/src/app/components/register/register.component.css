@@ -1,0 +1,29 @@
+.register-form-container {
+    width: 45%;
+    padding: 25px;
+
+    .register-form-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3rem;
+
+        #registerForm {
+            width: 90%;
+            max-width: 400px;
+
+            .btn-primary {
+                margin-top: 1rem;
+            }
+        }
+    }
+}
+
+.register-form-image {
+    background-image: url('/assets/images/login_signup_bg.png');
+    background-size: cover;
+    background-position: bottom;
+    max-width: 1200px;
+    width: 55%;
+}
