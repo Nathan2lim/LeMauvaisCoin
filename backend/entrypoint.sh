@@ -28,7 +28,10 @@ fi
 # Vider le cache
 if [ "$APP_ENV" != "prod" ]; then
     echo "Clearing Symfony cache..."
-    php bin/console cache:clear
+    rm -rf var/cache/* || true
+    php bin/console cache:clear --no-warmup || true
+    php bin/console cache:warmup || true
+    chmod -R 777 var/cache var/log
 fi
 
 # Exécuter les migrations si en dev

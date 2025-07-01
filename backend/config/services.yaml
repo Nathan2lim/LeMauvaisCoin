@@ -28,3 +28,9 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+        
+    # Décorateur OpenAPI pour l'endpoint de recherche
+    App\OpenApi\SearchOpenApiDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\SearchOpenApiDecorator.inner']
+        autoconfigure: false
