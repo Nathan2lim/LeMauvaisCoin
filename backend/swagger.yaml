@@ -1,0 +1,642 @@
+openapi: 3.0.0
+info:
+  title: 'LeMauvaisCoin API'
+  description: 'API pour gérer les annonces, utilisateurs, catégories et images'
+  version: 1.0.0
+
+servers:
+  - url: '/api'
+    description: 'Serveur API LeMauvaisCoin'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        phone:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - email
+        - name
+        - password
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - name
+        - slug
+
+    Ad:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        city:
+          type: string
+        zipcode:
+          type: string
+        address:
+          type: string
+        isPublished:
+          type: boolean
+          default: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        category:
+          $ref: '#/components/schemas/Category'
+        owner:
+          $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - title
+        - description
+        - price
+        - city
+        - category
+
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+        ad:
+          $ref: '#/components/schemas/Ad'
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - url
+
+    LoginCredentials:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+      required:
+        - email
+        - password
+        - name
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+
+security:
+  - bearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  /login_check:
+    post:
+      tags:
+        - Authentication
+      summary: 'Authentification utilisateur'
+      operationId: login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCredentials'
+      responses:
+        '200':
+          description: 'Authentification réussie'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: 'Identifiants invalides'
+
+  /register:
+    post:
+      tags:
+        - Authentication
+      summary: "Inscription d'un nouvel utilisateur"
+      operationId: register
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: 'Utilisateur créé avec succès'
+        '400':
+          description: 'Données invalides'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: 'Email déjà utilisé'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /me:
+    get:
+      tags:
+        - Authentication
+      summary: "Informations de l'utilisateur connecté"
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: "Informations de l'utilisateur connecté"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: "Pas d'utilisateur connecté"
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: 'Liste des utilisateurs'
+      operationId: getUsers
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/ItemsPerPage'
+      responses:
+        '200':
+          description: 'Liste des utilisateurs récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '401':
+          description: 'Non autorisé'
+    post:
+      tags:
+        - Users
+      summary: 'Créer un utilisateur'
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: 'Utilisateur créé avec succès'
+        '400':
+          description: 'Données invalides'
+
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Users
+      summary: 'Récupérer un utilisateur par ID'
+      operationId: getUserById
+      responses:
+        '200':
+          description: 'Utilisateur récupéré avec succès'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: 'Utilisateur non trouvé'
+    put:
+      tags:
+        - Users
+      summary: 'Mettre à jour un utilisateur'
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 'Utilisateur mis à jour avec succès'
+        '400':
+          description: 'Données invalides'
+        '404':
+          description: 'Utilisateur non trouvé'
+    delete:
+      tags:
+        - Users
+      summary: 'Supprimer un utilisateur'
+      operationId: deleteUser
+      responses:
+        '204':
+          description: 'Utilisateur supprimé avec succès'
+        '404':
+          description: 'Utilisateur non trouvé'
+
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: 'Liste des catégories'
+      operationId: getCategories
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/ItemsPerPage'
+      responses:
+        '200':
+          description: 'Liste des catégories récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+    post:
+      tags:
+        - Categories
+      summary: 'Créer une catégorie'
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: 'Catégorie créée avec succès'
+        '400':
+          description: 'Données invalides'
+
+  /categories/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Categories
+      summary: 'Récupérer une catégorie par ID'
+      operationId: getCategoryById
+      responses:
+        '200':
+          description: 'Catégorie récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: 'Catégorie non trouvée'
+    put:
+      tags:
+        - Categories
+      summary: 'Mettre à jour une catégorie'
+      operationId: updateCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: 'Catégorie mise à jour avec succès'
+        '400':
+          description: 'Données invalides'
+        '404':
+          description: 'Catégorie non trouvée'
+    delete:
+      tags:
+        - Categories
+      summary: 'Supprimer une catégorie'
+      operationId: deleteCategory
+      responses:
+        '204':
+          description: 'Catégorie supprimée avec succès'
+        '404':
+          description: 'Catégorie non trouvée'
+
+  /ads:
+    get:
+      tags:
+        - Ads
+      summary: 'Liste des annonces'
+      operationId: getAds
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/ItemsPerPage'
+        - name: title
+          in: query
+          schema:
+            type: string
+          description: 'Filtrer par titre (recherche partielle)'
+        - name: category
+          in: query
+          schema:
+            type: integer
+          description: 'Filtrer par ID de catégorie'
+        - name: price[between]
+          in: query
+          schema:
+            type: string
+            example: '10..100'
+          description: 'Filtrer par fourchette de prix'
+        - name: city
+          in: query
+          schema:
+            type: string
+          description: 'Filtrer par ville (recherche partielle)'
+        - name: isPublished
+          in: query
+          schema:
+            type: boolean
+          description: 'Filtrer par statut de publication'
+        - name: order[price]
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: 'Trier par prix'
+      responses:
+        '200':
+          description: 'Liste des annonces récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ad'
+    post:
+      tags:
+        - Ads
+      summary: 'Créer une annonce'
+      operationId: createAd
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ad'
+      responses:
+        '201':
+          description: 'Annonce créée avec succès'
+        '400':
+          description: 'Données invalides'
+
+  /ads/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Ads
+      summary: 'Récupérer une annonce par ID'
+      operationId: getAdById
+      responses:
+        '200':
+          description: 'Annonce récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ad'
+        '404':
+          description: 'Annonce non trouvée'
+    put:
+      tags:
+        - Ads
+      summary: 'Mettre à jour une annonce'
+      operationId: updateAd
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ad'
+      responses:
+        '200':
+          description: 'Annonce mise à jour avec succès'
+        '400':
+          description: 'Données invalides'
+        '404':
+          description: 'Annonce non trouvée'
+    delete:
+      tags:
+        - Ads
+      summary: 'Supprimer une annonce'
+      operationId: deleteAd
+      responses:
+        '204':
+          description: 'Annonce supprimée avec succès'
+        '404':
+          description: 'Annonce non trouvée'
+
+  /images:
+    get:
+      tags:
+        - Images
+      summary: 'Liste des images'
+      operationId: getImages
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/ItemsPerPage'
+      responses:
+        '200':
+          description: 'Liste des images récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  'hydra:member':
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Image'
+    post:
+      tags:
+        - Images
+      summary: 'Créer une image'
+      operationId: createImage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        '201':
+          description: 'Image créée avec succès'
+        '400':
+          description: 'Données invalides'
+
+  /images/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - Images
+      summary: 'Récupérer une image par ID'
+      operationId: getImageById
+      responses:
+        '200':
+          description: 'Image récupérée avec succès'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Image'
+        '404':
+          description: 'Image non trouvée'
+    delete:
+      tags:
+        - Images
+      summary: 'Supprimer une image'
+      operationId: deleteImage
+      responses:
+        '204':
+          description: 'Image supprimée avec succès'
+        '404':
+          description: 'Image non trouvée'
+
+# Paramètres globaux
+parameters:
+    Page:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: 'Numéro de page pour la pagination'
+    
+    ItemsPerPage:
+      name: itemsPerPage
+      in: query
+      schema:
+        type: integer
+        default: 30
+      description: 'Nombre d''éléments par page'

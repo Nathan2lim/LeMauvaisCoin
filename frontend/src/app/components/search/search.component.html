@@ -1,0 +1,73 @@
+<div class="search-container">
+  <div class="search-form">
+    <div class="input-group mb-3">
+      <input 
+        type="text"
+        class="form-control"
+        placeholder="Rechercher une annonce..."
+        [formControl]="searchControl"
+      >
+      <button 
+        class="btn btn-primary" 
+        type="button" 
+        (click)="search()"
+        [disabled]="isLoading || !searchControl.value || searchControl.value.length < 2"
+      >
+        <i *ngIf="isLoading" class="fa fa-spinner fa-spin"></i>
+        <i *ngIf="!isLoading" class="fa fa-search"></i>
+        Rechercher
+      </button>
+    </div>
+  </div>
+
+  <!-- Résultats de recherche -->
+  <div *ngIf="results.length > 0" class="search-results">
+    <div class="alert alert-info">
+      {{ totalResults }} résultat(s) trouvé(s) pour "{{ searchControl.value }}"
+    </div>
+
+    <div class="card mb-3" *ngFor="let ad of results">
+      <div class="row g-0">
+        <div class="col-md-3" *ngIf="ad.images && ad.images.length > 0">
+          <img [src]="ad.images[0].url" class="img-fluid rounded-start" alt="{{ ad.title }}">
+        </div>
+        <div [class]="ad.images && ad.images.length > 0 ? 'col-md-9' : 'col-md-12'">
+          <div class="card-body">
+            <h5 class="card-title">{{ ad.title }}</h5>
+            <p class="card-text price">{{ ad.price | currency:'EUR' }}</p>
+            <p class="card-text text-muted">
+              {{ ad.city }} ({{ ad.zipcode }})
+              <span *ngIf="ad.category">- {{ ad.category.name }}</span>
+            </p>
+            <p class="card-text description">{{ ad.description | slice:0:150 }}...</p>
+            <a [routerLink]="['/annonces', ad.id]" class="btn btn-sm btn-outline-primary">Voir l'annonce</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav *ngIf="totalResults > itemsPerPage">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="onPageChange(currentPage - 1)" tabindex="-1">Précédent</a>
+        </li>
+        
+        <ng-container *ngFor="let page of [].constructor(Math.ceil(totalResults / itemsPerPage)); let i = index">
+          <li class="page-item" [class.active]="currentPage === i + 1">
+            <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+          </li>
+        </ng-container>
+        
+        <li class="page-item" [class.disabled]="currentPage === Math.ceil(totalResults / itemsPerPage)">
+          <a class="page-link" (click)="onPageChange(currentPage + 1)">Suivant</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Message si aucun résultat -->
+  <div *ngIf="searchControl.value && searchControl.value.length >= 2 && !isLoading && results.length === 0" class="alert alert-warning">
+    Aucune annonce ne correspond à votre recherche "{{ searchControl.value }}"
+  </div>
+</div>
