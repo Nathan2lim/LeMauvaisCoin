@@ -13,7 +13,9 @@ import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
 import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
 import { FavorisComponent } from './components/favoris/favoris.component';
-import { NewComponent } from './components/new/new.component'
+import { NewComponent } from './components/new/new.component';
+import { FooterComponent } from './components/layout/footer/footer.component';
+import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { NewComponent } from './components/new/new.component'
     FavButtonComponent,
     FavCardComponent,
     FavorisComponent,
-    NewComponent
+    NewComponent,
+    FooterComponent,
+    MainLayoutComponent,
   ],
   imports: [
     BrowserModule,
