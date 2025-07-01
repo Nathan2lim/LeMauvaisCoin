@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { ListingsComponent } from './components/listings.component';
 import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import { ErrorMessageComponent } from './shared/error-message/error-message.component';
 import { HomeComponent } from './components/home/home.component';
@@ -15,7 +15,8 @@ import { CategoryComponent } from './components/category/category.component'
 import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
 import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
-import { FavorisComponent } from './components/favoris/favoris.component'
+import { FavorisComponent } from './components/favoris/favoris.component';
+import { OtpComponent } from './components/otp/otp.component'
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FavorisComponent } from './components/favoris/favoris.component'
     RegisterComponent,
     FavButtonComponent,
     FavCardComponent,
-    FavorisComponent
+    FavorisComponent,
+    OtpComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ import { FavorisComponent } from './components/favoris/favoris.component'
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     NgOptimizedImage
   ],
   providers: [],

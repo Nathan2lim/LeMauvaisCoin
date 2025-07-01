@@ -1,0 +1,81 @@
+<section class="otp-container">
+    <div class="otp-card">
+        <div class="header">
+            <button class="back-button" (click)="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="content">
+            <div class="otp-header-image">
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="0 0 46 46" fill="none">
+                    <path
+                        d="M42.1666 24.9166V11.5C42.1666 10.4833 41.7627 9.50827 41.0438 8.78938C40.3249 8.07049 39.3499 7.66663 38.3333 7.66663H7.66659C6.64992 7.66663 5.6749 8.07049 4.95601 8.78938C4.23712 9.50827 3.83325 10.4833 3.83325 11.5V34.5C3.83325 36.6083 5.55825 38.3333 7.66659 38.3333H22.9999M42.1666 13.4166L24.9741 24.3416C24.3824 24.7124 23.6982 24.909 22.9999 24.909C22.3016 24.909 21.6175 24.7124 21.0258 24.3416L3.83325 13.4166M30.6666 36.4166L34.4999 40.25L42.1666 32.5833"
+                        stroke="#282828" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </div>
+            <div class="instruction">
+                <h2>Entrez le code reçu par email</h2>
+
+                <div class="timer-section">
+                    <div *ngIf="!showRegenerateButton && timeLeft > 0" class="timer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="timer-icon">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                            <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <span>{{ getFormattedTime() }}</span>
+                    </div>
+
+                    <div *ngIf="showRegenerateButton" class="regenerate-section">
+                        <button class="regenerate-button" (click)="regenerateOtp()" [disabled]="isLoading">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
+                                <path d="M18.375 10.5C18.375 8.41142 17.5453 6.40838 16.0685 4.93153C14.5916 3.45469 12.5886 2.625 10.5 2.625C8.29846 2.63328 6.18535 3.49232 4.6025 5.0225L2.625 7M2.625 7V2.625M2.625 7H7M2.625 10.5C2.625 12.5886 3.45469 14.5916 4.93153 16.0685C6.40838 17.5453 8.41142 18.375 10.5 18.375C12.7015 18.3667 14.8147 17.5077 16.3975 15.9775L18.375 14M18.375 14H14M18.375 14V18.375" stroke="#EC5A13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Renvoyer</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="otp-inputs">
+                <input 
+                  #otpInput 
+                  *ngFor="let digit of otpDigits; let i = index" 
+                  type="text" 
+                  class="otp-input"
+                  maxlength="1" 
+                  [(ngModel)]="otpDigits[i]" 
+                  (input)="onDigitInput($event, i)" 
+                  (keydown)="onKeyDown($event, i)" 
+                  (paste)="onPaste($event)" 
+                  [disabled]="isLoading" 
+                  pattern="[0-9]*" 
+                  inputmode="numeric" />
+            </div>
+
+            <!-- New validation button -->
+            <div class="validate-section">
+                <button 
+                    class="validate-button" 
+                    (click)="onValidateOtp()" 
+                    [disabled]="!isOtpComplete() || isLoading || showRegenerateButton">
+                    <span *ngIf="!isLoading">Valider</span>
+                    <span *ngIf="isLoading" class="loading-text">
+                        <div class="spinner"></div>
+                        Validation...
+                    </span>
+                </button>
+            </div>
+
+            <div *ngIf="isLoading && !showRegenerateButton" class="verification-loading">
+                <div class="spinner"></div>
+                <span>Vérification en cours...</span>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="otp-image"></section>

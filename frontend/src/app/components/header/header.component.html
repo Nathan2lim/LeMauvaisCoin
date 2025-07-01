@@ -1,5 +1,5 @@
 <section class="header-container">
-    <img ngSrc="assets/images/logo.svg" alt="logo" class="logo" height="44" width="218" priority="true">
+    <img ngSrc="assets/images/logo.svg" alt="logo" class="logo" height="44" width="218" priority="true" routerLink="/home">
     
     <button class="header-button" >
         <img ngSrc="assets/images/plus.svg" alt="plus icon" class="plus-icon" height="24" width="24">
@@ -16,7 +16,7 @@
     </div>
 
     <div class="user-actions">
-        <button class="action-button">
+        <button class="action-button" routerLink="/favorites">
             <img ngSrc="assets/images/heart.svg" alt="heart icon" class="action-icon" height="24" width="24">
             <span class="action-text">Favoris</span>
         </button>
