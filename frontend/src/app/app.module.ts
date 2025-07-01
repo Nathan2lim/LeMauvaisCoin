@@ -25,7 +25,7 @@ import { FavorisComponent } from './components/favoris/favoris.component'
     ErrorMessageComponent,
     HomeComponent,
     HeaderComponent,
-    CategoryComponent
+    CategoryComponent,
     RegisterComponent,
     FavButtonComponent,
     FavCardComponent,
