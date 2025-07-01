@@ -9,6 +9,9 @@ import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import { ErrorMessageComponent } from './shared/error-message/error-message.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { CategoryComponent } from './components/category/category.component'
 import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
 import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
@@ -20,6 +23,9 @@ import { FavorisComponent } from './components/favoris/favoris.component'
     ListingsComponent,
     LoginComponent,
     ErrorMessageComponent,
+    HomeComponent,
+    HeaderComponent,
+    CategoryComponent
     RegisterComponent,
     FavButtonComponent,
     FavCardComponent,
