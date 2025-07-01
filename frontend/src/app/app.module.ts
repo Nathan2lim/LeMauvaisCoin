@@ -8,14 +8,20 @@ import { ListingsComponent } from './components/listings.component';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
-import { ErrorMessageComponent } from './shared/error-message/error-message.component'
+import { ErrorMessageComponent } from './shared/error-message/error-message.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { CategoryComponent } from './components/category/category.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     ListingsComponent,
     LoginComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    HomeComponent,
+    HeaderComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,
