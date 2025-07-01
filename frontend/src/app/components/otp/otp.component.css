@@ -1,0 +1,245 @@
+.otp-container {
+    width: 45%;
+    padding: 25px;
+
+    .back-button {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--accent-color);
+        background-color: transparent;
+        border: none;
+
+        svg {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .otp-header-image {
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            width: 90px;
+            margin-bottom: 20px;
+
+            svg path {
+                stroke: white;
+            }
+        }
+
+        .instruction {
+            text-align: center;
+            margin-bottom: 30px;
+
+            h2 {
+                margin: 10px 0;
+                color: var(--text-color);
+                font-size: 24px;
+                font-weight: 600;
+            }
+        }
+
+        .timer-section {
+            margin: 20px 0;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text-color);
+            font-size: 14px;
+
+            .timer-icon {
+                color: var(--accent-color);
+            }
+        }
+
+        .regenerate-section {
+            text-align: center;
+
+            .regenerate-button {
+                background-color: transparent;
+                color: var(--accent-color);
+                border: none;
+                border-radius: 4px;
+                padding: 12px 24px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                margin: 0 auto;
+                min-width: 160px;
+                min-height: 48px;
+
+                &:hover:not(:disabled) {
+                    opacity: 0.9;
+                }
+
+                &:disabled {
+                    opacity: 0.7;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .otp-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            color: var(--dark-text-color);
+
+            .otp-input {
+                width: 60px;
+                height: 60px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 24px;
+                font-weight: 600;
+                color: var(--text-color);
+                background-color: white;
+                transition: all 0.2s ease;
+                outline: none;
+
+                &:focus {
+                    border-color: var(--accent-color);
+                    box-shadow: 0 0 0 3px rgba(var(--accent-color-rgb), 0.1);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+        }
+
+        .validate-section {
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            .validate-button {
+                background-color: var(--accent-color);
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 12px 32px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                min-width: 120px;
+                min-height: 48px;
+
+                &:hover:not(:disabled) {
+                    background-color: var(--accent-color);
+                    opacity: 0.9;
+                    transform: translateY(-1px);
+                }
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+                .loading-text {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .spinner {
+                    width: 16px;
+                    height: 16px;
+                    border: 2px solid rgba(255, 255, 255, 0.3);
+                    border-top: 2px solid white;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+            }
+        }
+
+        .verification-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-color);
+            font-size: 14px;
+            margin-top: 20px;
+
+            .spinner {
+                width: 16px;
+                height: 16px;
+                border: 2px solid rgba(0, 0, 0, 0.1);
+                border-top: 2px solid var(--accent-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+        }
+    }
+}
+
+.otp-image {
+    background-image: url('/assets/images/login_signup_bg.png');
+    background-size: cover;
+    background-position: bottom;
+    max-width: 1200px;
+    width: 55%;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .otp-container {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .otp-image {
+        display: none;
+    }
+}
+
+/* Animation for invalid OTP */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.otp-input.error {
+    border-color: var(--accent-color);
+    animation: shake 0.3s ease-in-out;
+}

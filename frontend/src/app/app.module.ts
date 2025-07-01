@@ -6,9 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { ListingsComponent } from './components/listings.component';
 import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import { ErrorMessageComponent } from './shared/error-message/error-message.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { CategoryComponent } from './components/category/category.component'
 import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
 import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
@@ -16,6 +19,7 @@ import { FavorisComponent } from './components/favoris/favoris.component';
 import { NewComponent } from './components/new/new.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
+import { OtpComponent } from './components/otp/otp.component'
 
 @NgModule({
   declarations: [
@@ -23,6 +27,9 @@ import { MainLayoutComponent } from './components/layout/main-layout/main-layout
     ListingsComponent,
     LoginComponent,
     ErrorMessageComponent,
+    HomeComponent,
+    HeaderComponent,
+    CategoryComponent,
     RegisterComponent,
     FavButtonComponent,
     FavCardComponent,
@@ -30,6 +37,7 @@ import { MainLayoutComponent } from './components/layout/main-layout/main-layout
     NewComponent,
     FooterComponent,
     MainLayoutComponent,
+    OtpComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +45,7 @@ import { MainLayoutComponent } from './components/layout/main-layout/main-layout
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     NgOptimizedImage
   ],
   providers: [],

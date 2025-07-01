@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListingsComponent } from './components/listings.component';
 import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './components/home/home.component';
 import { RegisterComponent } from './components/register/register.component'
 import { FavorisComponent } from './components/favoris/favoris.component';
 import { NewComponent } from './components/new/new.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
+import { OtpComponent } from './components/otp/otp.component';
 
 // Define routes
 // const routes: Routes = [
@@ -20,17 +22,20 @@ import { MainLayoutComponent } from './components/layout/main-layout/main-layout
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  {path: 'otp', component: OtpComponent},
   {
     path: '',
     component: MainLayoutComponent,
     children: [
       { path: '', component: ListingsComponent },
+      {path: 'home', component: HomeComponent},
       { path: 'favorites', component: FavorisComponent },
       { path: 'new', component: NewComponent },
-      { path: '**', redirectTo: '', pathMatch: 'full' }, // Redirect any unknown paths to the home page
+      { path: '**', redirectTo: 'home', pathMatch: 'full' }, // Redirect any unknown paths to the home page
     ]
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
