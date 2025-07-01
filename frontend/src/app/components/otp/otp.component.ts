@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,17 +7,27 @@ import { Router } from '@angular/router';
   styleUrls: ['./otp.component.css']
 })
 export class OtpComponent implements OnInit, OnDestroy {
-  @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
-  
-  otpDigits: string[] = ['', '', '', ''];
-  timeLeft: number;
-  timerInterval: any;
-  showRegenerateButton: boolean = false;
+  otp1: string;
+  otp2: string;
+  otp3: string;
+  otp4: string;
+  finalOtp: string;
+  @ViewChild('otpInput1') otpInput1;
+  @ViewChild('otpInput2') otpInput2;
+  @ViewChild('otpInput3') otpInput3;
+  @ViewChild('otpInput4') otpInput4;
   isLoading: boolean = false;
+  isOtpComplete: boolean = false;
+  showRegenerateButton: boolean = false;
+  timeLeft: number = 90; // 1 minute 30 in seconds
+  timerInterval: any;
+  showError: boolean = false;
+  error: string = '';
+  dataPaste: string = '';
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.startTimer();
   }
 
@@ -40,100 +50,15 @@ export class OtpComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  onDigitInput(event: any, index: number): void {
-    const value = event.target.value;
-
-    // Only allow single digit
-    if (value.length > 1) {
-      event.target.value = value.slice(-1);
-    }
-
-    // Update the otpDigits array only if the value has changed
-    if (this.otpDigits[index] !== event.target.value) {
-      this.otpDigits[index] = event.target.value;
-    }
-
-    // Auto-focus next input
-    if (value && index < 3) {
-      const nextInput = this.otpInputs.toArray()[index + 1];
-      if (nextInput) {
-        nextInput.nativeElement.focus();
-      }
-    }
-  }
-
-  onKeyDown(event: KeyboardEvent, index: number): void {
-    // Handle backspace
-    if (event.key === 'Backspace' && !this.otpDigits[index] && index > 0) {
-      const prevInput = this.otpInputs.toArray()[index - 1];
-      if (prevInput) {
-        prevInput.nativeElement.focus();
-      }
-    }
-  }
-
-  onPaste(event: ClipboardEvent): void {
-    event.preventDefault();
-    const pastedData = event.clipboardData?.getData('text') || '';
-    const digits = pastedData.replace(/\D/g, '').slice(0, 4).split('');
-    
-    digits.forEach((digit, index) => {
-      if (index < 4) {
-        this.otpDigits[index] = digit;
-        const input = this.otpInputs.toArray()[index];
-        if (input) {
-          input.nativeElement.value = digit;
-        }
-      }
-    });
-    
-    // Focus the next empty input or the last one
-    const nextEmptyIndex = this.otpDigits.findIndex(digit => digit === '');
-    const targetIndex = nextEmptyIndex !== -1 ? nextEmptyIndex : 3;
-    const targetInput = this.otpInputs.toArray()[targetIndex];
-    if (targetInput) {
-      targetInput.nativeElement.focus();
-    }
-    
-    // Remove auto-validation after paste
-  }
-
-  // New method to check if OTP is complete
-  isOtpComplete(): boolean {
-    return this.otpDigits.every(digit => digit !== '');
-  }
-
-  // New method to validate OTP on button click
-  onValidateOtp(): void {
-    if (this.isOtpComplete()) {
-      this.verifyOtp();
-    }
-  }
-
-  verifyOtp(): void {
-    this.isLoading = true;
-    const otpCode = this.otpDigits.join('');
-    
-    // Simulate API call
-    setTimeout(() => {
-      // Here you would normally call your API service
-      console.log('Verifying OTP:', otpCode);
-      
-      // Simulate success/failure
-      if (otpCode === '1234') { // Example valid code
-        this.router.navigate(['/home']);
-      } else {
-        this.showError('Code OTP invalide');
-        this.clearOtp();
-      }
-      this.isLoading = false;
-    }, 1000);
+  getFormattedTime(): string {
+    const minutes = Math.floor(this.timeLeft / 60);
+    const seconds = this.timeLeft % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
   regenerateOtp(): void {
     this.isLoading = true;
     
-    // Simulate API call to regenerate OTP
     setTimeout(() => {
       console.log('Regenerating OTP...');
       this.clearOtp();
@@ -142,30 +67,103 @@ export class OtpComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  clearOtp(): void {
-    this.otpDigits = ['', '', '', ''];
-    this.otpInputs.forEach((input, index) => {
-      input.nativeElement.value = '';
-    });
-    
-    // Focus first input
-    if (this.otpInputs.first) {
-      this.otpInputs.first.nativeElement.focus();
+    clearOtp(): void {
+    this.otp1 = '';
+    this.otp2 = '';
+    this.otp3 = '';
+    this.otp4 = '';
+    this.isOtpComplete = false;
+    this.showError = false;
+    this.otpInput1.nativeElement.focus();
+  }
+
+  onPaste(event: ClipboardEvent) {
+    this.dataPaste = event.clipboardData.getData('text');
+    console.log('Pasted data:', this.dataPaste);
+
+    if (/^\d{4}$/.test(this.dataPaste)) {
+      this.otp1 = this.dataPaste[0];
+      this.otp2 = this.dataPaste[1];
+      this.otp3 = this.dataPaste[2];
+      this.otp4 = this.dataPaste[3];
+      this.isOtpComplete = true;
+      this.otpInput4.nativeElement.focus();
+      this.finalOtp = this.dataPaste;
+    } else {
+      this.showError = true;
+      this.error = 'Le code OTP doit être un code à 4 chiffres.';
+    }
+
+  }
+
+  onOTP1Change() {
+    console.log("otp1", this.otp1)
+    if (this.otp1 === '') {
+      this.isOtpComplete = false;
+    } else {
+      this.otpInput2.nativeElement.focus();
+      this.checkIfOtpComplete();
     }
   }
 
-  showError(message: string): void {
-    // You can implement a toast notification or error display here
-    alert(message);
+  onOTP2Change() {
+    console.log(this.otp2);
+    if (this.otp2 === '') {
+      this.otpInput1.nativeElement.focus();
+      this.isOtpComplete = false;
+    } else {
+      this.otpInput3.nativeElement.focus();
+      this.checkIfOtpComplete();
+    }
   }
 
-  getFormattedTime(): string {
-    const minutes = Math.floor(this.timeLeft / 60);
-    const seconds = this.timeLeft % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  onOTP3Change() {
+    if(this.otp3 === '') {
+      this.otpInput2.nativeElement.focus();
+      this.isOtpComplete = false;
+    } else {
+      this.otpInput4.nativeElement.focus();
+      this.checkIfOtpComplete();
+    }
   }
 
-  goBack(): void {
+  onOTP4Change() {
+    if(this.otp4 === '') {
+      this.otpInput3.nativeElement.focus();
+      this.isOtpComplete = false;
+    } else {
+      this.checkIfOtpComplete();
+    }
+  }
+
+  checkIfOtpComplete() {
+    if (this.otp1 && this.otp2 && this.otp3 && this.otp4) {
+      this.isOtpComplete = true;
+    } else {
+      this.isOtpComplete = false;
+    }
+  }
+
+  onValidateOtp() {
+    if (this.isOtpComplete) {
+      this.isLoading = true;
+      this.finalOtp = this.otp1 + this.otp2 + this.otp3 + this.otp4;
+      console.log('Validating OTP:', this.finalOtp);
+
+      if (this.finalOtp === '1234') { // Example condition for successful OTP validation
+          this.showError = false;
+          this.isLoading = false;
+          this.router.navigate(['/home']);
+      } else {
+          this.isLoading = false;
+          this.showError = true;
+          this.error = 'Le code OTP est incorrect. Veuillez réessayer.';
+
+      }
+    }
+  }
+
+  goBack() {
     this.router.navigate(['/register']);
   }
 }
