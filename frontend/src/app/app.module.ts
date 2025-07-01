@@ -12,7 +12,8 @@ import { ErrorMessageComponent } from './shared/error-message/error-message.comp
 import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
 import { FavCardComponent } from './components/favoris/fav-card/fav-card.component';
-import { FavorisComponent } from './components/favoris/favoris.component'
+import { FavorisComponent } from './components/favoris/favoris.component';
+import { NewComponent } from './components/new/new.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FavorisComponent } from './components/favoris/favoris.component'
     RegisterComponent,
     FavButtonComponent,
     FavCardComponent,
-    FavorisComponent
+    FavorisComponent,
+    NewComponent
   ],
   imports: [
     BrowserModule,

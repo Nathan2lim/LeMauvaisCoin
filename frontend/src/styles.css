@@ -112,6 +112,155 @@ a {
       border: 2px solid var(--secondary-color);
     }
   }
+
+  select {
+    font-family: "Nunito", sans-serif;
+    color: var(--dark-text-color);
+    font-size: 1rem;
+    padding: 12px;
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--input-color);
+
+    &::placeholder {
+      color: var(--grey-color);
+    }
+
+    &:focus {
+      outline: none;
+      border: 2px solid var(--secondary-color);
+    }
+  }
+
+  textarea {
+    font-family: "Nunito", sans-serif;
+    color: var(--dark-text-color);
+    font-size: 1rem;
+    padding: 12px;
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    background-color: var(--input-color);
+    resize: vertical;
+
+    &::placeholder {
+      color: var(--grey-color);
+    }
+
+    &:focus {
+      outline: none;
+      border: 2px solid var(--secondary-color);
+    }
+  }
+
+  .file-drop-zone {
+    position: relative;
+    border: 2px dashed var(--accent-color);
+    background-color: var(--main-color);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: var(--secondary-color);
+      background-color: rgba(236, 90, 19, 0.1);
+    }
+    
+    &.dragover {
+      border-color: var(--secondary-color);
+      background-color: rgba(246, 174, 139, 0.2);
+      transform: scale(1.02);
+    }
+    
+    .file-drop-text {
+      color: var(--white-color);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      
+      .highlight {
+        color: var(--accent-color);
+        font-weight: 700;
+      }
+    }
+    
+    .file-drop-subtext {
+      color: var(--grey-color);
+      font-size: 0.875rem;
+    }
+  }
+
+  input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+  }
+
+}
+
+/* Selected files list styles */
+.selected-files-list {
+  margin-top: 1rem;
+  
+  .files-title {
+    color: var(--white-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  
+  .file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(241, 241, 241, 0.1);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(236, 90, 19, 0.3);
+    
+    .file-info {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      
+      .file-preview {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-right: 0.75rem;
+        border: 1px solid var(--accent-color);
+      }
+      
+      .file-name {
+        color: var(--white-color);
+        font-size: 0.875rem;
+        word-break: break-word;
+      }
+    }
+    
+    .remove-btn {
+      background-color: var(--fav-color);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: #8b1f16;
+      }
+    }
+  }
 }
 
 .form-footer {
