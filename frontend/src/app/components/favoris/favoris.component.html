@@ -1,0 +1,15 @@
+<div class="favorites-container">
+  
+  <div class="favorites-list" *ngIf="favorites.length > 0">
+    <app-fav-card 
+      *ngFor="let favorite of favorites" 
+      [favorite]="favorite"
+      (favoriteChanged)="onFavoriteChanged(favorite.id, $event)">
+    </app-fav-card>
+  </div>
+  
+  <div class="no-favorites" *ngIf="favorites.length === 0">
+    <h3>Vous n'avez pas encore d'annonce sauvegardée</h3>
+    <img ngSrc="assets/images/no_favs.png" alt="Aucune annonce sauvegardée" width="384" height="181">
+  </div>
+</div>

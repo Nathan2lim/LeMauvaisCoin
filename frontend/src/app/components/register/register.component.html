@@ -1,0 +1,67 @@
+<section class="register-form-container">
+    <img ngSrc="assets/images/logo.svg" alt="logo" class="logo" height="44" width="218" priority="true">
+    <div class="register-form-content">
+        <h1>Bienvenue !</h1>
+        <form (submit)="onSubmit($event)" id="registerForm">
+            <!-- Error message component at the top - only show if there are errors -->
+            <app-error-message
+                *ngIf="getAllErrors()"
+                [message]="getAllErrors()">
+            </app-error-message>
+
+            <div class="form-group" [class.has-error]="hasFieldError('email')">
+                <label for="email" class="required">Email</label>
+                <input
+                id="email"
+                type="email"
+                [formControl]="emailControl"
+                class="form-control"
+                placeholder="exemple@email.com"
+                autocomplete="email"
+                required>
+            </div>
+
+            <div class="form-group" [class.has-error]="hasFieldError('username')">
+                <label for="username" class="required">Nom d'utilisateur</label>
+                <input
+                id="username"
+                type="text"
+                [formControl]="usernameControl"
+                class="form-control"
+                placeholder="Votre nom d'utilisateur"
+                autocomplete="username"
+                required>
+            </div>
+
+            <div class="form-group" [class.has-error]="hasFieldError('password')">
+                <label for="password" class="required">Mot de passe</label>
+                <input
+                id="password"
+                type="password"
+                [formControl]="passwordControl"
+                class="form-control"
+                placeholder="Votre mot de passe"
+                autocomplete="new-password"
+                required>
+            </div>
+
+            <div class="form-group" [class.has-error]="hasFieldError('confirmPassword')">
+                <label for="confirmPassword" class="required">Confirmer le mot de passe</label>
+                <input
+                id="confirmPassword"
+                type="password"
+                [formControl]="confirmPasswordControl"
+                class="form-control"
+                placeholder="Confirmez votre mot de passe"
+                autocomplete="new-password"
+                required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="!isFormValid">S'inscrire</button>
+            <div class="form-footer">
+                <p>Déjà inscrit ? <a routerLink="/login">Connectez-vous !</a></p>
+            </div>
+        </form>
+    </div>
+</section>
+<section class="register-form-image"></section>

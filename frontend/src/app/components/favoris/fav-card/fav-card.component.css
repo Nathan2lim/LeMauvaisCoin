@@ -1,0 +1,44 @@
+.fav-card {
+    display: flex;
+    border: 1px solid var(--grey-color);
+    border-radius: 10px;
+    overflow: hidden;
+    height: 200px;
+
+    .fav-card-img {
+        position: relative;
+
+        app-fav-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+    }
+
+    .fav-card-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        h3 {
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            margin: 0;
+        }
+
+        .fav-card-footer {
+            display: flex;
+            flex-direction: column;
+
+        span {
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+    }
+    }
+}
