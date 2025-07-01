@@ -139,6 +139,7 @@ export class NewComponent {
     this.selectedFiles = [];
     
     Array.from(files).forEach(file => {
+
       // Check if file is an image
       if (file.type.startsWith('image/')) {
         // Create preview URL for images
