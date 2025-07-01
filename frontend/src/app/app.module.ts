@@ -10,7 +10,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgOptimizedImage } from '@angular/common';
 import { ErrorMessageComponent } from './shared/error-message/error-message.component';
 import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from './components/layout/header/header.component';
 import { CategoryComponent } from './components/category/category.component'
 import { RegisterComponent } from './components/register/register.component';
 import { FavButtonComponent } from './shared/fav-button/fav-button.component';
