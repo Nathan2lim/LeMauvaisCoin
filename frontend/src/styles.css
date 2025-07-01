@@ -10,6 +10,7 @@
   --grey-color: #AAAAAA;
   --white-color: #FFFFFF;
   --black-color: #000000;
+  --fav-color: #AD291F;
 }
 
 html {
@@ -81,6 +82,14 @@ a {
       content: "*";
       color: red;
       margin-left: 3px;
+    }
+  }
+
+  &.has-error input {
+    border: 2px solid #e74c3c;
+
+    &:focus {
+      outline: 2px solid #e74c3c;
     }
   }
 

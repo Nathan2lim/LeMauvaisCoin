@@ -1,0 +1,20 @@
+<div class="fav-card">
+    <div class="fav-card-img">
+        <img [src]="displayImageUrl" [alt]="displayTitle + ' Image'">
+        <app-fav-button 
+          [isFavorite]="displayIsFavorite"
+          (favoriteChanged)="onFavoriteToggle($event)">
+        </app-fav-button>
+    </div>
+    <div class="fav-card-content">
+        <div>
+            <h3>{{ displayTitle }}</h3>
+            <p>{{ displayPrice }}</p>
+        </div>
+        <div class="fav-card-footer">
+            <span class="category">{{ displayCategory }}</span>
+            <span class="city">{{ displayCity }}</span>
+            <span class="date">{{ displayDate }}</span>
+        </div>
+    </div>
+</div>
