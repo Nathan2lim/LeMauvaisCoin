@@ -10,10 +10,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use App\Entity\User;
 use OpenApi\Attributes as OA;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/register',
+            controller: self::class,
+            name: 'register',
+            openapi: new \ApiPlatform\OpenApi\Model\Operation(
+                tags: ['Authentication']
+            )
+        )
+    ]
+)]
 class AuthController extends AbstractController
 {
-    #[Route('/api/register', name: 'api_register', methods: ['POST'])]
     #[OA\Tag(name: 'Authentication')]
     #[OA\RequestBody(
         description: 'Données d\'inscription d\'un nouvel utilisateur',
@@ -39,7 +52,7 @@ class AuthController extends AbstractController
         response: 409,
         description: 'Email déjà utilisé'
     )]
-    public function register(
+    public function __invoke(
         \Symfony\Component\HttpFoundation\Request $request,
         \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $passwordHasher,
         \Doctrine\ORM\EntityManagerInterface $entityManager,
