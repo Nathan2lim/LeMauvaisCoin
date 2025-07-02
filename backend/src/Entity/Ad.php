@@ -25,7 +25,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(normalizationContext: ['groups' => ['ad:read', 'ad:item:read']]),
         new GetCollection(normalizationContext: ['groups' => ['ad:read']]),
-        new Post(denormalizationContext: ['groups' => ['ad:write']]),
         new Put(denormalizationContext: ['groups' => ['ad:write']]),
         new Delete()
     ],
