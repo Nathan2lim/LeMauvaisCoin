@@ -1,0 +1,29 @@
+app-error-message {
+    width: 80%;
+    margin-bottom: 1em;
+}
+.new-container{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+
+    form{
+        width: 100%;
+
+        .horizontal-container{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 5em;
+
+            .form-group{
+                width: 100%;
+            }
+        }
+    }
+}

@@ -1,0 +1,124 @@
+<div class="new-container">
+  <h1>Déposer une annonce</h1>
+
+  <app-error-message *ngIf="getAllErrors()" [message]="getAllErrors()"></app-error-message>
+  <form (submit)="onSubmit($event)" id="registerForm">
+            <!-- Error message component at the top - only show if there are errors -->
+
+            <div class="horizontal-container">
+                <div class="form-group" [class.has-error]="titleControl.invalid && titleControl.touched">
+                    <label for="title" class="required">Titre</label>
+                    <input
+                    id="title"
+                    type="text"
+                    [formControl]="titleControl"
+                    class="form-control"
+                    placeholder="Entrez le titre de votre annonce"
+                    required>
+                </div>
+                
+                <div class="form-group" [class.has-error]="categoryControl.invalid && categoryControl.touched">
+                    <label for="category" class="required">Catégorie</label>
+                    <select
+                    id="category"
+                    [formControl]="categoryControl"
+                    class="form-control"
+                    required>
+                    <option value="" disabled selected>Choisissez une catégorie</option>
+                    <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                </select>
+            </div>
+        </div>
+
+            <div class="form-group" [class.has-error]="imageControl.invalid && imageControl.touched">
+                <label for="image">Image</label>
+                <div class="file-drop-zone" 
+                     (click)="triggerFileInput()"
+                     (dragover)="onDragOver($event)"
+                     (dragleave)="onDragLeave($event)"
+                     (drop)="onDrop($event)"
+                     [class.dragover]="isDragOver">
+                    <input
+                        #fileInput
+                        id="image"
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        (change)="onFileSelected($event)">
+                    <div class="file-drop-text">
+                        <span class="highlight">Cliquez pour sélectionner</span> ou glissez-déposez vos images ici
+                    </div>
+                    <div class="file-drop-subtext">
+                        Formats acceptés: JPG, PNG, GIF (max 5MB par image)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Display the list of selected images -->
+            <div class="selected-files-list" *ngIf="selectedFiles.length > 0">
+                <div class="files-title">Images sélectionnées ({{ selectedFiles.length }}) :</div>
+                <div class="file-item" *ngFor="let fileItem of selectedFiles; let i = index">
+                    <div class="file-info">
+                        <img [src]="fileItem.preview" 
+                             [alt]="fileItem.name" 
+                             class="file-preview">
+                        <span class="file-name">{{ fileItem.name }}</span>
+                    </div>
+                    <button type="button" 
+                            class="remove-btn" 
+                            (click)="removeFile(i)">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+
+            <div class="horizontal-container">
+
+                <div class="form-group" [class.has-error]="locationControl.invalid && locationControl.touched">
+                    <label for="location" class="required">Où ?</label>
+                    <input
+                    id="location"
+                    type="text"
+                    [formControl]="locationControl"
+                    class="form-control"
+                    placeholder="Paris, France"
+                    required>
+                </div>
+
+                <div class="form-group" [class.has-error]="priceControl.invalid && priceControl.touched">
+                    <label for="price" class="required">Prix</label>
+                    <input
+                    id="price"
+                    type="number"
+                    [formControl]="priceControl"
+                    class="form-control"
+                    placeholder="Entrez le prix de votre annonce"
+                    required>
+                </div>
+            </div>
+
+
+            <div class="form-group" [class.has-error]="descriptionControl.invalid && descriptionControl.touched">
+                <label for="description" class="required">Description</label>
+                <textarea
+                id="description"
+                [formControl]="descriptionControl"
+                class="form-control"
+                placeholder="Décrivez votre annonce"
+                rows="4"
+                required></textarea>
+            </div>
+
+
+
+
+
+
+            <button type="submit" class="btn btn-primary" [disabled]="!isFormValid">Publier l'annonce</button>
+            <div class="form-footer">
+                <p>Besoin d'aide ? <a routerLink="/help">Consultez notre guide !</a></p>
+            </div>
+        </form>
+  
+
+</div>

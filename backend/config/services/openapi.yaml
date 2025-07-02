@@ -1,0 +1,7 @@
+# config/services.yaml
+services:
+    # Décorateur pour ajouter l'endpoint de recherche à la documentation OpenAPI
+    App\OpenApi\SearchOpenApiDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\SearchOpenApiDecorator.inner']
+        autoconfigure: false

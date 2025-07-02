@@ -28,3 +28,14 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+        
+    # Décorateur simple pour ajouter la documentation du login_check
+    App\OpenApi\SimpleAuthTagDecorator:
+        decorates: 'api_platform.openapi.factory'
+        arguments: ['@App\OpenApi\SimpleAuthTagDecorator.inner']
+        autoconfigure: false
+        
+    # Listener pour personnaliser l'interface Swagger UI
+    App\EventListener\SwaggerCustomization:
+        tags:
+            - { name: kernel.event_subscriber }
