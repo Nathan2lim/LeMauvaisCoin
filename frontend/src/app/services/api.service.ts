@@ -16,6 +16,18 @@ export class ApiService {
     this.userToken = token;
   }
 
+  getUserToken(): string | null {
+    if (!this.userToken) {
+      if(localStorage.getItem('auth_token')) {
+        this.userToken = localStorage.getItem('auth_token');
+      }else {
+        console.warn('No user token found in localStorage or service.');
+        return null;
+      }
+    }
+  return this.userToken;
+  }
+
   // Get status from the API
   getApiStatus(): Observable<any> {
     const headers = { 'Authorization': `Bearer ${this.userToken}` };
@@ -58,5 +70,10 @@ export class ApiService {
     }
 
     return this.http.post(`${this.apiUrl}/ads`, formData, { headers });
+  }
+
+  getListingById(id: string): Observable<any> {
+    const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
+    return this.http.get(`${this.apiUrl}/ads/${id}`, { headers });
   }
 }

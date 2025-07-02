@@ -30,111 +30,120 @@ class AdController extends AbstractController
         $this->uploadsDirectory = 'public/uploads';
     }
 
-    #[Route('/ads', name: 'api_ads_post', methods: ['POST'])]
-    public function createAd(Request $request): JsonResponse
-    {
-        try {
-            // Get form data
-            $title = $request->request->get('title');
-            $description = $request->request->get('description');
-            $price = $request->request->get('price');
-            $city = $request->request->get('city');
-            $zipcode = $request->request->get('zipcode');
-            $categoryId = $request->request->get('category');
-            $userId = $request->request->get('user', 1); // Default to user 1 for now
+#[Route('/ads', name: 'api_ads_post', methods: ['POST'])]
+public function createAd(Request $request): JsonResponse
+{
+    try {
+        // Get form data
+        $title = $request->request->get('title');
+        $description = $request->request->get('description');
+        $price = $request->request->get('price');
+        $city = $request->request->get('city');
+        $zipcode = $request->request->get('zipcode');
+        $categoryId = $request->request->get('category');
+        $userId = $request->request->get('user', 1); // Default to user 1 for now
 
-            // Validate required fields
-            if (!$title || !$description || !$price || !$city || !$zipcode || !$categoryId) {
-                return $this->json([
-                    'error' => 'Missing required fields',
-                    'required' => ['title', 'description', 'price', 'city', 'zipcode', 'category']
-                ], Response::HTTP_BAD_REQUEST);
-            }
-
-            // Get entities
-            $category = $this->entityManager->getRepository(Category::class)->find($categoryId);
-            if (!$category) {
-                return $this->json(['error' => 'Category not found'], Response::HTTP_BAD_REQUEST);
-            }
-
-            $user = $this->entityManager->getRepository(User::class)->find($userId);
-            if (!$user) {
-                return $this->json(['error' => 'User not found'], Response::HTTP_BAD_REQUEST);
-            }
-
-            // Create Ad entity
-            $ad = new Ad();
-            $ad->setTitle($title);
-            $ad->setDescription($description);
-            $ad->setPrice($price);
-            $ad->setCity($city);
-            $ad->setZipcode($zipcode);
-            $ad->setCategory($category);
-            $ad->setUser($user);
-            $ad->setIsPublished(true);
-
-            // Validate the ad
-            $errors = $this->validator->validate($ad);
-            if (count($errors) > 0) {
-                $errorMessages = [];
-                foreach ($errors as $error) {
-                    $errorMessages[] = $error->getMessage();
-                }
-                return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
-            }
-
-            // Persist the ad first
-            $this->entityManager->persist($ad);
-            $this->entityManager->flush();
-
-            // Handle file uploads
-            $uploadedFiles = $request->files->get('images', []);
-            if (!is_array($uploadedFiles)) {
-                $uploadedFiles = [$uploadedFiles];
-            }
-
-            $imageUrls = [];
-            $position = 1;
-
-            foreach ($uploadedFiles as $uploadedFile) {
-                if ($uploadedFile instanceof UploadedFile && $uploadedFile->isValid()) {
-                    $url = $this->handleFileUpload($uploadedFile, $ad, $position);
-                    if ($url) {
-                        $imageUrls[] = $url;
-                        $position++;
-                    }
-                }
-            }
-
-            $this->entityManager->flush();
-
+        // Validate required fields
+        if (!$title || !$description || !$price || !$city || !$zipcode || !$categoryId) {
             return $this->json([
-                'id' => $ad->getId(),
-                'title' => $ad->getTitle(),
-                'description' => $ad->getDescription(),
-                'price' => $ad->getPrice(),
-                'city' => $ad->getCity(),
-                'zipcode' => $ad->getZipcode(),
-                'images' => $imageUrls,
-                'category' => [
-                    'id' => $category->getId(),
-                    'name' => $category->getName()
-                ],
-                'user' => [
-                    'id' => $user->getId(),
-                    'email' => $user->getEmail()
-                ],
-                'createdAt' => $ad->getCreatedAt()->format('Y-m-d H:i:s'),
-                'isPublished' => $ad->isIsPublished()
-            ], Response::HTTP_CREATED);
-
-        } catch (\Exception $e) {
-            return $this->json([
-                'error' => 'Failed to create ad',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                'error' => 'Missing required fields',
+                'required' => ['title', 'description', 'price', 'city', 'zipcode', 'category']
+            ], Response::HTTP_BAD_REQUEST);
         }
+
+        // Get entities
+        $category = $this->entityManager->getRepository(Category::class)->find($categoryId);
+        if (!$category) {
+            return $this->json(['error' => 'Category not found'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $this->entityManager->getRepository(User::class)->find($userId);
+        if (!$user) {
+            return $this->json(['error' => 'User not found'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Create Ad entity
+        $ad = new Ad();
+        $ad->setTitle($title);
+        $ad->setDescription($description);
+        $ad->setPrice($price);
+        $ad->setCity($city);
+        $ad->setZipcode($zipcode);
+        $ad->setCategory($category);
+        $ad->setUser($user);
+        $ad->setIsPublished(true);
+
+        // Manually set timestamps if the trait isn't working
+        $now = new \DateTime();
+        if (method_exists($ad, 'setCreatedAt')) {
+            $ad->setCreatedAt($now);
+        }
+        if (method_exists($ad, 'setUpdatedAt')) {
+            $ad->setUpdatedAt($now);
+        }
+
+        // Validate the ad
+        $errors = $this->validator->validate($ad);
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            return $this->json(['errors' => $errorMessages], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Persist the ad first
+        $this->entityManager->persist($ad);
+        $this->entityManager->flush();
+
+        // Handle file uploads
+        $uploadedFiles = $request->files->get('images', []);
+        if (!is_array($uploadedFiles)) {
+            $uploadedFiles = [$uploadedFiles];
+        }
+
+        $imageUrls = [];
+        $position = 1;
+
+        foreach ($uploadedFiles as $uploadedFile) {
+            if ($uploadedFile instanceof UploadedFile && $uploadedFile->isValid()) {
+                $url = $this->handleFileUpload($uploadedFile, $ad, $position);
+                if ($url) {
+                    $imageUrls[] = $url;
+                    $position++;
+                }
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return $this->json([
+            'id' => $ad->getId(),
+            'title' => $ad->getTitle(),
+            'description' => $ad->getDescription(),
+            'price' => $ad->getPrice(),
+            'city' => $ad->getCity(),
+            'zipcode' => $ad->getZipcode(),
+            'images' => $imageUrls,
+            'category' => [
+                'id' => $category->getId(),
+                'name' => $category->getName()
+            ],
+            'user' => [
+                'id' => $user->getId(),
+                'email' => $user->getEmail()
+            ],
+            'createdAt' => $ad->getCreatedAt() ? $ad->getCreatedAt()->format('Y-m-d H:i:s') : $now->format('Y-m-d H:i:s'),
+            'isPublished' => $ad->isIsPublished()
+        ], Response::HTTP_CREATED);
+
+    } catch (\Exception $e) {
+        return $this->json([
+            'error' => 'Failed to create ad',
+            'message' => $e->getMessage()
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+}
 
     private function handleFileUpload(UploadedFile $file, Ad $ad, int $position): ?string
     {
