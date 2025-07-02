@@ -34,8 +34,11 @@
           required>
       </div>
 
-      <button type="submit" class="btn btn-primary" [disabled]="!isFormValid">Connexion</button>
-      <div class="form-footer">
+        <button type="submit" class="btn btn-primary" [disabled]="!isFormValid || isLoading">
+          <span *ngIf="!isLoading">Connexion</span>
+          <span *ngIf="isLoading">Connexion en cours...</span>
+        </button>      
+        <div class="form-footer">
         <p>Pas encore de compte ? <a routerLink="/register">Créez en un !</a></p>
       </div>
     </form>

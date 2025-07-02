@@ -27,7 +27,7 @@
                             <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <span>{{ getFormattedTime() }}</span>
+                        <span> {{ getFormattedTime() }}</span>
                     </div>
 
                     <div *ngIf="showRegenerateButton" class="regenerate-section">
@@ -39,22 +39,56 @@
                         </button>
                     </div>
                 </div>
+
+                
+                <app-error-message
+                    *ngIf="showError"
+                    [message]="error">
+                </app-error-message>
             </div>
 
             <div class="otp-inputs">
-                <input 
-                  #otpInput 
-                  *ngFor="let digit of otpDigits; let i = index" 
+                <input
+                  #otpInput1
                   type="text" 
                   class="otp-input"
                   maxlength="1" 
-                  [(ngModel)]="otpDigits[i]" 
-                  (input)="onDigitInput($event, i)" 
-                  (keydown)="onKeyDown($event, i)" 
-                  (paste)="onPaste($event)" 
-                  [disabled]="isLoading" 
                   pattern="[0-9]*" 
-                  inputmode="numeric" />
+                  inputmode="numeric" 
+                  [(ngModel)]="otp1"
+                  (keyup)="onOTP1Change()"
+                  (paste)="onPaste($event)"
+                  />
+                <input
+                  #otpInput2
+                  type="text" 
+                  class="otp-input"
+                  maxlength="1" 
+                  pattern="[0-9]*" 
+                  inputmode="numeric"
+                  [(ngModel)]="otp2" 
+                  (keyup)="onOTP2Change()"
+                  />
+                <input 
+                  #otpInput3
+                  type="text" 
+                  class="otp-input"
+                  maxlength="1" 
+                  pattern="[0-9]*" 
+                  inputmode="numeric" 
+                  [(ngModel)]="otp3" 
+                  (keyup)="onOTP3Change()"
+                    />
+                <input
+                  #otpInput4
+                  type="text" 
+                  class="otp-input"
+                  maxlength="1" 
+                  pattern="[0-9]*" 
+                  inputmode="numeric" 
+                  [(ngModel)]="otp4"
+                  (keyup)="onOTP4Change()"
+                  />
             </div>
 
             <!-- New validation button -->
@@ -62,7 +96,7 @@
                 <button 
                     class="validate-button" 
                     (click)="onValidateOtp()" 
-                    [disabled]="!isOtpComplete() || isLoading || showRegenerateButton">
+                    [disabled]="!isOtpComplete || isLoading || showRegenerateButton">
                     <span *ngIf="!isLoading">Valider</span>
                     <span *ngIf="isLoading" class="loading-text">
                         <div class="spinner"></div>
