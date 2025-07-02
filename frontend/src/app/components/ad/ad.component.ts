@@ -51,7 +51,7 @@ export class AdComponent implements OnInit {
               publishedAt: new Date(data.publishedAt),
               images: data.images.map((image: any) => ({
                 id: image.id,
-                url: image.url
+                url: 'http://localhost:8000' + image.url
               }))
             };
           },

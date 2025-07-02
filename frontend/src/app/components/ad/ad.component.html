@@ -1,1 +1,13 @@
-<p>ad works!</p>
+<div>
+    <p>{{adContent.title}}</p>
+    <p>{{adContent.description}}</p>
+    <p>{{adContent.price}} €</p>
+    <p>{{adContent.city}} - {{adContent.zipcode}}</p>
+    <p>{{adContent.category.title}}</p>
+    <p>Publié par : {{adContent.user.name}}</p>
+    <p>Date de publication : {{adContent.publishedAt | date:'dd/MM/yyyy'}}</p>
+
+    <div *ngFor="let image of adContent.images">
+        <img [src]="image.url" alt="Ad Image" style="max-width: 100%; height: auto;">
+    </div>
+</div>
