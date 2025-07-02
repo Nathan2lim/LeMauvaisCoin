@@ -21,7 +21,10 @@ use OpenApi\Attributes as OA;
             uriTemplate: '/search',
             controller: self::class,
             description: 'Recherche des annonces basée sur des termes dans le titre ou la description',
-            name: 'search'
+            name: 'search',
+            openapi: new \ApiPlatform\OpenApi\Model\Operation(
+                tags: ['Search']
+            )
         )
     ]
 )]
