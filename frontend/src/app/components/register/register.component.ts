@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-register',
@@ -18,10 +20,13 @@ export class RegisterComponent implements OnInit{
   ]);
   confirmPasswordControl = new FormControl('', [Validators.required, this.passwordMatchValidator.bind(this)]);
 
+  constructor(private router: Router, private apiService: ApiService) {}
+
   // Track which fields have been touched/focused
   touchedFields: Set<string> = new Set();
   submitAttempted: boolean = false;
   apiError: string = '';
+  isLoading: boolean = false;
 
   ngOnInit(): void {
     this.emailControl.valueChanges.subscribe(() => {
@@ -182,6 +187,7 @@ export class RegisterComponent implements OnInit{
     event?.preventDefault(); // Prevent default form submission behavior
     this.submitAttempted = true;
     this.apiError = ''; // Reset API error
+    this.isLoading = true; // Set loading state
 
     // Mark all fields as touched to show validation errors
     this.touchedFields.add('email');
@@ -190,12 +196,28 @@ export class RegisterComponent implements OnInit{
     this.touchedFields.add('confirmPassword');
 
     if (!this.isFormValid) {
-      console.log('Form is invalid');
+      this.isLoading = false;
       return; // Don't submit if form is invalid
     }
 
     if (this.isFormValid) {
-      console.log('Form submitted successfully');
+      const email = this.emailControl.value;
+      const username = this.usernameControl.value;
+      const password = this.passwordControl.value;
+      console.log('Form submitted:', { email, username, password });
+
+      this.apiService.register(email, username, password).subscribe({
+        next: (response) => {
+          console.log('Registration successful:', response);
+          this.isLoading = false;
+          this.router.navigate(['/otp']); // Redirect to login on success
+        },
+        error: (error) => {
+          console.error('Registration failed:', error);
+          this.isLoading = false;
+          this.apiError = 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.';
+        }
+      });
     }
   }
 
