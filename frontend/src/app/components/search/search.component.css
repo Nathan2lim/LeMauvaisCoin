@@ -1,0 +1,53 @@
+.search-container {
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.search-form {
+  margin-bottom: 20px;
+}
+
+.search-results {
+  margin-top: 20px;
+}
+
+.card {
+  transition: transform 0.2s;
+  margin-bottom: 15px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.description {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.pagination .page-link {
+  cursor: pointer;
+}
+
+/* Style pour les images d'annonces */
+.card img {
+  max-height: 180px;
+  object-fit: cover;
+}
+
+/* Animation de chargement */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+  animation: spin 1s infinite linear;
+}
