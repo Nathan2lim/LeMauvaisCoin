@@ -210,7 +210,7 @@ export class RegisterComponent implements OnInit{
         next: (response) => {
           console.log('Registration successful:', response);
           this.isLoading = false;
-          this.router.navigate(['/otp']); // Redirect to login on success
+          this.router.navigate(['/otp'], { queryParams: {email, password} }); // Redirect to login on success
         },
         error: (error) => {
           console.error('Registration failed:', error);

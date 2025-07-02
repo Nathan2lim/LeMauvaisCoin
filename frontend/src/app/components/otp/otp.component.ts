@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChildren, QueryList, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-otp',
@@ -24,11 +25,17 @@ export class OtpComponent implements OnInit, OnDestroy {
   showError: boolean = false;
   error: string = '';
   dataPaste: string = '';
+  email: string | null = null;
+  password: string | null = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute, private apiService: ApiService) {}
 
     ngOnInit(): void {
     this.startTimer();
+    this.route.queryParams.subscribe(params => {
+      this.email = params['email'] || null;
+      this.password = params['password'] || null;
+    });
   }
 
   ngOnDestroy(): void {
@@ -151,9 +158,23 @@ export class OtpComponent implements OnInit, OnDestroy {
       console.log('Validating OTP:', this.finalOtp);
 
       if (this.finalOtp === '1234') { // Example condition for successful OTP validation
+        this.apiService.login(this.email!, this.password!).subscribe({
+          next: (response) => {
+          console.log('Login successful:', response);
+          if (response.token) {
+            localStorage.setItem('auth_token', response.token);
+          }
           this.showError = false;
           this.isLoading = false;
           this.router.navigate(['/home']);
+        },
+          error: (error) => {
+          console.error('Login failed:', error);
+          this.isLoading = false;
+          this.showError = true;
+          this.error = 'Une erreur est survenue lors de la connexion. Veuillez réessayer.';
+        }
+        });
       } else {
           this.isLoading = false;
           this.showError = true;
