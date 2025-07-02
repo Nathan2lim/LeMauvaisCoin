@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +17,9 @@ export class LoginComponent implements OnInit {
   touchedFields: Set<string> = new Set();
   submitAttempted: boolean = false;
   apiError: string = '';
+  isLoading: boolean = false;
+
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
     this.emailControl.valueChanges.subscribe(() => {
@@ -83,12 +88,14 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitAttempted = true;
     this.apiError = ''; // Clear previous API errors
+    this.isLoading = true;
     
     // Mark all fields as touched when submit is attempted
     this.touchedFields.add('email');
     this.touchedFields.add('password');
 
     if (!this.isFormValid) {
+      this.isLoading = false;
       return; // Don't submit if form is invalid
     }
 
@@ -96,13 +103,25 @@ export class LoginComponent implements OnInit {
     const password = this.passwordControl.value;
     console.log('Login data:', { email, password });
     
-    // TODO: Replace with actual API call
-    // Simulate API error for demonstration
-    if (email !== 'test@example.com' || password !== 'password') {
-      this.apiError = 'Identifiants incorrects.';
-    } else {
-      console.log('Login successful!');
-      // Handle successful login
-    }
+    // api call
+    this.apiService.login(email!, password!).subscribe({
+      next: (response) => {
+        console.log('Login successful!', response);
+        this.isLoading = false;
+        
+        // Store the JWT token if provided
+        if (response.token) {
+          localStorage.setItem('auth_token', response.token);
+        }
+        
+        // Navigate to home page or wherever you want after login
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        this.isLoading = false;
+        this.apiError = 'Identifiants incorrects. Veuillez réessayer.';
+      }
+    });
   }
 }
