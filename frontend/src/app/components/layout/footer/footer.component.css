@@ -1,0 +1,119 @@
+.footer{
+    margin-top: 4em;
+    background-color: var(--footer-color);
+    color: var(--white-color);
+    text-align: center;
+    font-size: 0.85rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    padding-top: 2em;
+    padding-bottom: 1em;
+
+    .content-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 2rem;
+
+        .subcontent-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+
+            h3{
+                width: 70%;
+                text-align: left;
+                color: var(--white-color);
+                font-size: 1.2rem;
+                margin-bottom: 0.2rem;
+                line-height: 1;
+            }
+
+            a{
+                width: 70%;
+                text-align: left;
+                color: var(--white-color);
+                text-decoration: none;
+                font-weight: bold;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: var(--accent-color);
+                }
+            }
+
+            .separator {
+                width: 70%;
+                height: 1px;
+                background-color: var(--white-color);
+                margin: 0.7rem 0;
+            }
+        }
+    }
+
+    .details-container {
+        display: flex;
+        flex-direction: row;
+        align-items: space-between;
+        justify-content: center;
+        margin-top: 1rem;
+
+        .subdetails-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            color: var(--white-color);
+            font-size: 0.8rem;
+
+            &.first {
+                justify-content: flex-start;
+                padding-left: 4em;
+            }
+
+            &.last {
+                justify-content: flex-end;
+                padding-right: 4em;
+            }
+
+            .app-icons{
+                img{
+                    height: 2.5rem;
+                    margin: 0 0.2rem;
+                    transition: transform 0.15s;
+
+                    &:hover {
+                        transform: scale(1.05);
+                    }
+                }
+            }
+
+            .social-icons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                margin-left: 0.5rem;
+
+                img {
+                    height: 2rem;
+                    transition: transform 0.15s;
+
+                    &:hover {
+                        transform: scale(1.05);
+                    }
+                }
+            }
+        }
+    }
+}
