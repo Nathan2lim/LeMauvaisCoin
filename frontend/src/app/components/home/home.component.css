@@ -181,17 +181,17 @@
     border-radius: 15px;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.category-slide:hover {
-    transform: scale(1.05);
 }
 
 .category-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.category-slide:hover .category-image {
+    transform: scale(1.05);
 }
 
 .category-overlay {
@@ -256,11 +256,11 @@
 /* Now Section */
 .now-section {
     max-width: 1040px;
-    margin: 60px auto;
+    margin: 40px auto;
 }
 
 .now-title {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 700;
     color: white;
     margin: 0 0 10px 0;
@@ -268,57 +268,72 @@
 }
 
 .now-subtitle {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: white;
     margin: 0 0 30px 0;
     text-align: left;
 }
 
-.now-cards {
+.now-carousel-container {
+    position: relative;
     display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 10px;
+    align-items: center;
 }
 
-.now-card {
-    flex: 0 0 auto;
+.now-carousel-wrapper {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.now-carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease;
+}
+
+.now-slide {
+    position: relative;
+    min-width: 170px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.now-image-wrapper {
     width: 170px;
     height: 212px;
     border-radius: 15px;
     overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    scroll-snap-align: start;
-}
-
-.now-card:hover {
-    transform: scale(1.05);
+    margin-bottom: 10px;
 }
 
 .now-image {
     width: 100%;
-    height: 120px;
+    height: 100%;
     object-fit: cover;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.now-slide:hover .now-image {
+    transform: scale(1.05);
 }
 
 .now-label {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: white;
-    margin: 10px 10px 0;
+    margin: 0 0 5px 0;
+    text-align: left;
 }
 
 .now-price {
-    font-size: 14px;
-    font-weight: 500;
-    color: #ffd700;
-    margin: 5px 10px 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-align: left;
 }
 
 /* Responsive design */
@@ -334,6 +349,19 @@
     
     .categories-section {
         padding: 0 20px;
+    }
+    
+    .now-section {
+        padding: 0 20px;
+    }
+    
+    .now-slide {
+        min-width: 140px;
+    }
+    
+    .now-image {
+        width: 140px;
+        height: 175px;
     }
     
     .hero-title {
@@ -418,6 +446,15 @@
     .category-slide {
         min-width: 120px;
         height: 60px;
+    }
+    
+    .now-slide {
+        min-width: 120px;
+    }
+    
+    .now-image {
+        width: 120px;
+        height: 150px;
     }
     
     .category-name {

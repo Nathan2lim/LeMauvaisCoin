@@ -94,6 +94,13 @@
                         <h3 class="category-name">Ordinateurs</h3>
                     </div>
                 </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat6.png" alt="Livre" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Livre</h3>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -108,33 +115,101 @@
 <section class="now-section">
     <h2 class="now-title">En ce moment sur lemauvaiscoin</h2>
     <h3 class="now-subtitle">Voitures</h3>
-    <div class="now-cards">
-        <div class="now-card">
-            <img ngSrc="assets/images/home/car1.png" alt="Voiture 1" class="now-image" height="200" width="300">
-            <h4 class="now-label">Voiture de sport</h4>
-            <p class="now-price">€50,000</p>
+    <div class="now-carousel-container">
+        <button class="carousel-btn carousel-prev" (click)="previousNowSlide()" [disabled]="isNowPrevDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </button>
+        
+        <div class="now-carousel-wrapper">
+            <div class="now-carousel-track" [style.transform]="'translateX(' + (-currentNowSlide * nowSlideWidth) + 'px)'">
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car1.png" alt="Voiture 1" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Voiture de sport</h4>
+                    <p class="now-price">€50,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car2.png" alt="Voiture 2" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">SUV familial</h4>
+                    <p class="now-price">€30,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car3.png" alt="Voiture 3" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Berline élégante</h4>
+                    <p class="now-price">€40,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car4.png" alt="Voiture 4" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Cabriolet sportif</h4>
+                    <p class="now-price">€60,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car5.png" alt="Voiture 5" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Voiture électrique</h4>
+                    <p class="now-price">€45,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car1.png" alt="Voiture 6" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Coupé sport</h4>
+                    <p class="now-price">€55,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car2.png" alt="Voiture 7" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">4x4 tout-terrain</h4>
+                    <p class="now-price">€35,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car3.png" alt="Voiture 8" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Limousine luxe</h4>
+                    <p class="now-price">€80,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car4.png" alt="Voiture 9" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Décapotable vintage</h4>
+                    <p class="now-price">€70,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car5.png" alt="Voiture 10" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Hybride compacte</h4>
+                    <p class="now-price">€25,000</p>
+                </div>
+            </div>
         </div>
         
-        <div class="now-card">
-            <img ngSrc="assets/images/home/car2.png" alt="Voiture 2" class="now-image" height="200" width="300">
-            <h4 class="now-label">SUV familial</h4>
-            <p class="now-price">€30,000</p>
-        </div>
-        
-        <div class="now-card">
-            <img ngSrc="assets/images/home/car3.png" alt="Voiture 3" class="now-image" height="200" width="300">
-            <h4 class="now-label">Berline élégante</h4>
-            <p class="now-price">€40,000</p>
-        </div>
-        <div class="now-card">
-            <img ngSrc="assets/images/home/car4.png" alt="Voiture 4" class="now-image" height="200" width="300">
-            <h4 class="now-label">Cabriolet sportif</h4>
-            <p class="now-price">€60,000</p>
-        </div>
-        <div class="now-card">
-            <img ngSrc="assets/images/home/car5.png" alt="Voiture 5" class="now-image" height="200" width="300">
-            <h4 class="now-label">Voiture électrique</h4>
-            <p class="now-price">€45,000</p>
-        </div>
+        <button class="carousel-btn carousel-next" (click)="nextNowSlide()" [disabled]="isNowNextDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+        </button>
     </div>
 </section>
