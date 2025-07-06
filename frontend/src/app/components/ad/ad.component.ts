@@ -9,6 +9,9 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class AdComponent implements OnInit {
   adId: string | null = null;
+  selectedImage: string | null = null;
+  showPhoneNumber: boolean = false;
+  isFavorited: boolean = false;
 
   adContent: {
     id: number;
@@ -43,7 +46,7 @@ export class AdComponent implements OnInit {
               zipcode: data.zipcode,
               category: {
                 id: data.category.id,
-                title: data.category.title
+                title: data.category.name
               },
               user: {
                 name: data.user.name
@@ -62,5 +65,52 @@ export class AdComponent implements OnInit {
         });
       }
     });
+  }
+
+  selectImage(imageUrl: string): void {
+    this.selectedImage = imageUrl;
+  }
+
+  getInitials(name: string): string {
+    return name.split(' ')
+      .map(word => word.charAt(0))
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  }
+
+  contactSeller(): void {
+    // Implement contact functionality
+    console.log('Contact seller clicked');
+  }
+
+  showPhone(): void {
+    this.showPhoneNumber = !this.showPhoneNumber;
+  }
+
+  addToFavorites(): void {
+    this.isFavorited = !this.isFavorited;
+    // Implement favorites functionality
+    console.log('Add to favorites:', this.isFavorited);
+  }
+
+  shareAd(): void {
+    // Implement share functionality
+    if (navigator.share) {
+      navigator.share({
+        title: this.adContent?.title,
+        text: this.adContent?.description,
+        url: window.location.href
+      });
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(window.location.href);
+      alert('Lien copié dans le presse-papiers !');
+    }
+  }
+
+  reportAd(): void {
+    // Implement report functionality
+    console.log('Report ad clicked');
   }
 }

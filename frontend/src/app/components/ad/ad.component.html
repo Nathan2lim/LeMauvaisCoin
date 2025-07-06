@@ -1,13 +1,125 @@
-<div>
-    <p>{{adContent.title}}</p>
-    <p>{{adContent.description}}</p>
-    <p>{{adContent.price}} €</p>
-    <p>{{adContent.city}} - {{adContent.zipcode}}</p>
-    <p>{{adContent.category.title}}</p>
-    <p>Publié par : {{adContent.user.name}}</p>
-    <p>Date de publication : {{adContent.publishedAt | date:'dd/MM/yyyy'}}</p>
-
-    <div *ngFor="let image of adContent.images">
-        <img [src]="image.url" alt="Ad Image" style="max-width: 100%; height: auto;">
+<div class="ad-container" *ngIf="adContent">
+  <!-- Header -->
+  <div class="header">
+    <div class="breadcrumb">
+      <a href="/" class="breadcrumb-link">Accueil</a>
+      <span class="separator">></span>
+      <a href="/category/{{adContent.category.id}}" class="breadcrumb-link">{{adContent.category.title}}</a>
+      <span class="separator">></span>
+      <span class="current">{{adContent.title}}</span>
     </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Left column - Images -->
+    <div class="images-section">
+      <div class="main-image" *ngIf="adContent.images && adContent.images.length > 0">
+        <img [src]="selectedImage || adContent.images[0].url" alt="{{adContent.title}}" class="main-img">
+      </div>
+      <div class="thumbnail-grid" *ngIf="adContent.images && adContent.images.length > 1">
+        <div *ngFor="let image of adContent.images" 
+             class="thumbnail"
+             [class.active]="selectedImage === image.url"
+             (click)="selectImage(image.url)">
+          <img [src]="image.url" alt="Thumbnail" class="thumbnail-img">
+        </div>
+      </div>
+    </div>
+
+    <!-- Right column - Ad details -->
+    <div class="details-section">
+      <!-- Price and title -->
+      <div class="price-section">
+        <h1 class="ad-title">{{adContent.title}}</h1>
+        <div class="price">{{adContent.price}} €</div>
+      </div>
+
+      <!-- Location and date -->
+      <div class="meta-info">
+        <div class="location">
+          <i class="icon-location"></i>
+          <span>{{adContent.city}} ({{adContent.zipcode}})</span>
+        </div>
+        <div class="date">
+          <i class="icon-calendar"></i>
+          <span>{{adContent.publishedAt | date:'dd/MM/yyyy à HH:mm'}}</span>
+        </div>
+      </div>
+
+      <!-- Category -->
+      <div class="category-tag">
+        <span class="category-label">{{adContent.category.title}}</span>
+      </div>
+
+      <!-- Contact section -->
+      <div class="contact-section">
+        <div class="seller-info">
+          <div class="seller-avatar">
+            <span class="avatar-initials">{{getInitials(adContent.user.name)}}</span>
+          </div>
+          <div class="seller-details">
+            <p class="seller-name">{{adContent.user.name}}</p>
+            <p class="seller-type">Particulier</p>
+          </div>
+        </div>
+        <div class="contact-buttons">
+          <button class="btn btn-primary" (click)="contactSeller()">
+            <i class="icon-message"></i>
+            Envoyer un message
+          </button>
+          <button class="btn btn-secondary" (click)="showPhone()">
+            <i class="icon-phone"></i>
+            {{showPhoneNumber ? '06 12 34 56 78' : 'Voir le numéro'}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="action-btn" (click)="addToFavorites()">
+          <i class="icon-heart" [class.favorited]="isFavorited"></i>
+          <span>Ajouter aux favoris</span>
+        </button>
+        <button class="action-btn" (click)="shareAd()">
+          <i class="icon-share"></i>
+          <span>Partager</span>
+        </button>
+        <button class="action-btn" (click)="reportAd()">
+          <i class="icon-flag"></i>
+          <span>Signaler</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description section -->
+  <div class="description-section">
+    <h2>Description</h2>
+    <div class="description-content">
+      <p>{{adContent.description}}</p>
+    </div>
+  </div>
+
+  <!-- Similar ads section -->
+  <div class="similar-ads">
+    <h2>Annonces similaires</h2>
+    <div class="similar-ads-grid">
+      <!-- This would be populated with similar ads -->
+      <div class="similar-ad-placeholder">
+        <div class="placeholder-image"></div>
+        <div class="placeholder-text">
+          <div class="placeholder-title"></div>
+          <div class="placeholder-price"></div>
+          <div class="placeholder-location"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div class="loading-container" *ngIf="!adContent">
+  <div class="loading-spinner"></div>
+  <p>Chargement de l'annonce...</p>
 </div>

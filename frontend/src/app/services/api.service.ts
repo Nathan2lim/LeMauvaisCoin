@@ -76,4 +76,10 @@ export class ApiService {
     const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
     return this.http.get(`${this.apiUrl}/ads/${id}`, { headers });
   }
+
+
+  getUserInfo(): Observable<any> {
+    const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
+    return this.http.get(`${this.apiUrl}/me`, { headers });
+  }
 }
