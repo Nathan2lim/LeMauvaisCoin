@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewComponent } from './new.component';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 
 describe('NewComponent', () => {
   let component: NewComponent;
@@ -10,7 +12,7 @@ describe('NewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NewComponent],
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule], // Import HttpClientTestingModule for testing HTTP requests
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewComponent);
@@ -53,12 +55,12 @@ describe('NewComponent', () => {
   });
 
   it('should validate the form when all fields are correct', () => {
-    component.titleControl.setValue('Annonce valide');
+    component.titleControl.setValue('Titre valide');
     component.categoryControl.setValue('1');
     component.imageControl.setValue('image.jpg');
     component.locationControl.setValue('Paris');
     component.priceControl.setValue("100");
-    component.descriptionControl.setValue('Description valide');
+    component.descriptionControl.setValue('Description valide et assez longue.');
     fixture.detectChanges();
 
     expect(component.isFormValid).toBeTrue();

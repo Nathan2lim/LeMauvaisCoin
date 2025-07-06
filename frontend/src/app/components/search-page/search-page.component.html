@@ -1,0 +1,89 @@
+<div class="search-page-container">
+  <!-- Header section with search info -->
+  <div class="search-header">
+    <div class="search-info">
+      <h1 class="search-title">
+        <span *ngIf="searchQuery">Résultats pour "{{ searchQuery }}"</span>
+        <span *ngIf="!searchQuery">Toutes les annonces</span>
+      </h1>
+      <p class="search-meta" *ngIf="searchResults.length > 0">
+        {{ searchResults.length }} annonce(s) trouvée(s)
+      </p>
+    </div>
+  </div>
+
+  <!-- No results message -->
+  <div *ngIf="searchResults.length === 0 && searchQuery" class="no-results">
+    <div class="no-results-icon">🔍</div>
+    <h2>Aucune annonce trouvée</h2>
+    <p>Essayez de modifier votre recherche ou explorez nos catégories.</p>
+  </div>
+
+  <!-- Results grid -->
+  <div *ngIf="searchResults.length > 0" class="results-grid">
+    <div class="ad-card" *ngFor="let ad of searchResults" [routerLink]="['/ads', ad.id]">
+      <!-- Image container -->
+      <div class="ad-image-container">
+        <!-- Favorite button -->
+        <button class="ad-favorite-btn" (click)="$event.stopPropagation(); toggleFavorite(ad.id)">
+          ❤️
+        </button>
+        
+        <img 
+          *ngIf="ad.images && ad.images.length > 0; else noImage"
+          [src]="'http://localhost:8000' + ad.images[0].url" 
+          [alt]="ad.title"
+          class="ad-image"
+          loading="lazy"
+        />
+        <ng-template #noImage>
+          <div class="ad-no-image">
+            <span class="no-image-icon">📷</span>
+          </div>
+        </ng-template>
+        
+        <!-- Image count indicator -->
+        <div *ngIf="ad.images && ad.images.length > 1" class="image-count">
+          {{ ad.images.length }} photos
+        </div>
+        
+        <!-- Price badge -->
+        <div class="price-badge">
+          {{ ad.price | currency:'EUR':'symbol':'1.0-0' }}
+        </div>
+      </div>
+
+      <!-- Ad content -->
+      <div class="ad-content">
+        <h3 class="ad-title">{{ ad.title }}</h3>
+        <p class="ad-description">{{ ad.description | slice:0:80 }}{{ ad.description.length > 80 ? '...' : '' }}</p>
+        
+        <div class="ad-meta">
+          <div class="ad-location">
+            <span class="location-icon">📍</span>
+            {{ ad.city }}, {{ ad.zipcode }}
+          </div>
+          <div class="ad-category">
+            <span class="category-badge">{{ ad.category.name }}</span>
+          </div>
+        </div>
+
+        <div class="ad-footer">
+          <div class="ad-user">
+            <span class="user-icon">👤</span>
+            {{ ad.user.name }}
+          </div>
+          <div class="ad-date">
+            {{ ad.publishedAt | date:'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="searchResults.length === 0 && !searchQuery" class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Chargement des annonces...</p>
+  </div>
+</div>

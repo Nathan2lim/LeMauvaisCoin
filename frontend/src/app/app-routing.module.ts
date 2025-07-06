@@ -8,6 +8,9 @@ import { FavorisComponent } from './components/favoris/favoris.component';
 import { NewComponent } from './components/new/new.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 import { OtpComponent } from './components/otp/otp.component';
+import { authGuard } from './guards/auth.guard';
+import { AdComponent } from './components/ad/ad.component';
+import { SearchPageComponent } from './components/search-page/search-page.component';
 
 // Define routes
 // const routes: Routes = [
@@ -20,18 +23,24 @@ import { OtpComponent } from './components/otp/otp.component';
 // ]
 
 const routes: Routes = [
+  // Public routes (no guard needed)
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {path: 'otp', component: OtpComponent},
+  { path: 'otp', component: OtpComponent },
+  
+  // Protected routes
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard], // Use the functional guard
     children: [
       { path: '', component: ListingsComponent },
-      {path: 'home', component: HomeComponent},
+      { path: 'home', component: HomeComponent },
       { path: 'favorites', component: FavorisComponent },
+      { path: 'ads/:id', component: AdComponent },
+      { path: 'search', component: SearchPageComponent },
       { path: 'new', component: NewComponent },
-      { path: '**', redirectTo: 'home', pathMatch: 'full' }, // Redirect any unknown paths to the home page
+      { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]
   },
 ];

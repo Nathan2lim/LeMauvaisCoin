@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 
 interface FileWithPreview {
   file: File;
@@ -12,7 +14,9 @@ interface FileWithPreview {
   templateUrl: './new.component.html',
   styleUrls: ['./new.component.css']
 })
-export class NewComponent {
+export class NewComponent implements OnInit {
+  categories: { value: string; name: string }[] = [];
+
   titleControl = new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]);
   categoryControl = new FormControl('', [Validators.required]);
   imageControl = new FormControl('', [Validators.required]);
@@ -23,13 +27,22 @@ export class NewComponent {
   selectedFiles: FileWithPreview[] = [];
   isDragOver = false;
 
-  categories = [
-    { id: '1', name: 'Électronique' },
-    { id: '2', name: 'Vêtements' },
-    { id: '3', name: 'Meubles' },
-    { id: '4', name: 'Jouets' },
-    { id: '5', name: 'Livres' }
-  ];
+  constructor(private apiService: ApiService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.apiService.getCategories().subscribe(
+      (categories) => {
+        this.categories = categories.member.map((category: any) => ({
+          id: category.id,
+          name: category.name
+        }));
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+        // Handle error - maybe show a message to the user
+      }
+    );
+  }
 
   getAllErrors(): string {
     const errors: string[] = [];
@@ -76,6 +89,14 @@ export class NewComponent {
   }
 
   get isFormValid(): boolean {
+    console.log('Form Validity Check');
+    console.log('Title Valid:', this.titleControl.valid);
+    console.log('Category Valid:', this.categoryControl.valid);
+    console.log('Category Valid:', this.categoryControl.value);
+    console.log('Image Valid:', this.imageControl.valid);
+    console.log('Location Valid:', this.locationControl.valid);
+    console.log('Price Valid:', this.priceControl.valid);
+    console.log('Description Valid:', this.descriptionControl.valid);
     return this.titleControl.valid &&
            this.categoryControl.valid &&
            this.imageControl.valid &&
@@ -87,8 +108,27 @@ export class NewComponent {
   onSubmit(event: Event): void {
     event.preventDefault();
     if (this.isFormValid) {
-      // Handle form submission logic here
-      console.log('Form submitted successfully!');
+      const files = this.selectedFiles.map(fileWithPreview => fileWithPreview.file);
+      
+      this.apiService.postNewListing(
+        {
+          title: this.titleControl.value,
+          category: this.categoryControl.value,
+          location: this.locationControl.value,
+          price: this.priceControl.value,
+          description: this.descriptionControl.value
+        },
+        files
+      ).subscribe(
+        (response) => {
+          console.log('API Response:', response);
+          // Handle success - maybe redirect or show success message
+          this.router.navigate(['/ads/' + response.id]); // Redirect to home after successful submission
+        },
+        (error) => {
+          console.error('API Error:', error);
+          // Handle error
+        });
     } else {
       console.log('Form is invalid:', this.getAllErrors());
     }
@@ -100,11 +140,21 @@ export class NewComponent {
       this.processFiles(input.files);
     } else {
       this.selectedFiles = [];
+      this.imageControl.setValue('');
+      this.imageControl.markAsTouched();
     }
   }
 
   removeFile(index: number): void {
     this.selectedFiles.splice(index, 1);
+    
+    // Update form control
+    if (this.selectedFiles.length > 0) {
+      this.imageControl.setValue(`${this.selectedFiles.length} image(s) selected`);
+    } else {
+      this.imageControl.setValue('');
+    }
+    this.imageControl.markAsTouched();
   }
 
   triggerFileInput(): void {
@@ -137,22 +187,35 @@ export class NewComponent {
 
   private processFiles(files: FileList): void {
     this.selectedFiles = [];
+    const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
     
-    Array.from(files).forEach(file => {
+    if (validFiles.length === 0) {
+      this.imageControl.setValue('');
+      this.imageControl.markAsTouched();
+      return;
+    }
 
-      // Check if file is an image
-      if (file.type.startsWith('image/')) {
-        // Create preview URL for images
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.selectedFiles.push({
-            file: file,
-            name: file.name,
-            preview: e.target.result
-          });
-        };
-        reader.readAsDataURL(file);
-      }
+    let processedCount = 0;
+    
+    validFiles.forEach(file => {
+      // Create preview URL for images
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedFiles.push({
+          file: file,
+          name: file.name,
+          preview: e.target.result
+        });
+        
+        processedCount++;
+        
+        // Update form control when all files are processed
+        if (processedCount === validFiles.length) {
+          this.imageControl.setValue(`${this.selectedFiles.length} image(s) selected`);
+          this.imageControl.markAsTouched();
+        }
+      };
+      reader.readAsDataURL(file);
     });
   }
 }
