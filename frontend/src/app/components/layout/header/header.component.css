@@ -16,6 +16,7 @@
     flex: 1;
     max-width: 300px;
     margin-left: 28px;
+    font-family: "Nunito", sans-serif;
 }
 
 .search-input {
@@ -48,6 +49,7 @@
     justify-content: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: "Nunito", sans-serif;
 }
 
 .search-icon {

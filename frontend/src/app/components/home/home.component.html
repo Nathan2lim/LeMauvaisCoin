@@ -1,0 +1,215 @@
+<app-category></app-category>
+
+<section class="hero-banner">
+    <div class="hero-content">
+        <h1 class="hero-title">C'est le moment de vendre</h1>
+        <button class="hero-button">
+            <img ngSrc="assets/images/plus.svg" alt="plus icon" class="plus-icon" height="24" width="24">
+            <span class="button-text">Déposer une annonce</span>
+        </button>
+    </div>
+</section>
+
+<section class="trending-section">
+    <div class="trending-container">
+        <div class="trending-card main-card">
+            <div class="trending-content">
+                <h3 class="trending-title">Tendance en ce moment</h3>
+                <img ngSrc="assets/images/home/fire.svg" alt="fire icon" class="trending-icon" height="32" width="32">
+            </div>
+        </div>
+        
+        <div class="trending-card">
+            <img ngSrc="assets/images/home/trend1.png" alt="Trafic d'organe" class="trending-image" height="240" width="192">
+            <div class="trending-overlay">
+                <h4 class="trending-label">Trafic d'organe</h4>
+            </div>
+        </div>
+        
+        <div class="trending-card">
+            <img ngSrc="assets/images/home/trend2.png" alt="Trafic de drogue" class="trending-image" height="240" width="192">
+            <div class="trending-overlay">
+                <h4 class="trending-label">Trafic de drogue</h4>
+            </div>
+        </div>
+        
+        <div class="trending-card">
+            <img ngSrc="assets/images/home/trend3.png" alt="Vente d'arme" class="trending-image" height="240" width="192">
+            <div class="trending-overlay">
+                <h4 class="trending-label">Vente d'arme</h4>
+            </div>
+        </div>
+        
+        <div class="trending-card">
+            <img ngSrc="assets/images/home/trend4.png" alt="Contrefaçon" class="trending-image" height="240" width="192">
+            <div class="trending-overlay">
+                <h4 class="trending-label">Contrefaçon</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="categories-section">
+    <h2 class="categories-title">Top catégories</h2>
+    <div class="carousel-container">
+        <button class="carousel-btn carousel-prev" (click)="previousSlide()" [disabled]="isPrevDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </button>
+        
+        <div class="carousel-wrapper">
+            <div class="carousel-track" [style.transform]="'translateX(' + (-currentSlide * slideWidth) + 'px)'">
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat1.png" alt="Voitures" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Voitures</h3>
+                    </div>
+                </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat2.png" alt="Ameublement" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Ameublement</h3>
+                    </div>
+                </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat3.png" alt="Électroménager" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Électroménager</h3>
+                    </div>
+                </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat4.png" alt="Décoration" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Décoration</h3>
+                    </div>
+                </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat5.png" alt="Ordinateurs" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Ordinateurs</h3>
+                    </div>
+                </div>
+                
+                <div class="category-slide">
+                    <img ngSrc="assets/images/home/cat6.png" alt="Livre" class="category-image" height="100" width="180">
+                    <div class="category-overlay">
+                        <h3 class="category-name">Livre</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-btn carousel-next" (click)="nextSlide()" [disabled]="isNextDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+        </button>
+    </div>
+</section>
+
+<section class="now-section">
+    <h2 class="now-title">En ce moment sur lemauvaiscoin</h2>
+    <h3 class="now-subtitle">Voitures</h3>
+    <div class="now-carousel-container">
+        <button class="carousel-btn carousel-prev" (click)="previousNowSlide()" [disabled]="isNowPrevDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </button>
+        
+        <div class="now-carousel-wrapper">
+            <div class="now-carousel-track" [style.transform]="'translateX(' + (-currentNowSlide * nowSlideWidth) + 'px)'">
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car1.png" alt="Voiture 1" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Voiture de sport</h4>
+                    <p class="now-price">€50,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car2.png" alt="Voiture 2" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">SUV familial</h4>
+                    <p class="now-price">€30,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car3.png" alt="Voiture 3" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Berline élégante</h4>
+                    <p class="now-price">€40,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car4.png" alt="Voiture 4" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Cabriolet sportif</h4>
+                    <p class="now-price">€60,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car5.png" alt="Voiture 5" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Voiture électrique</h4>
+                    <p class="now-price">€45,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car1.png" alt="Voiture 6" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Coupé sport</h4>
+                    <p class="now-price">€55,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car2.png" alt="Voiture 7" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">4x4 tout-terrain</h4>
+                    <p class="now-price">€35,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car3.png" alt="Voiture 8" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Limousine luxe</h4>
+                    <p class="now-price">€80,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car4.png" alt="Voiture 9" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Décapotable vintage</h4>
+                    <p class="now-price">€70,000</p>
+                </div>
+                
+                <div class="now-slide">
+                    <div class="now-image-wrapper">
+                        <img ngSrc="assets/images/home/car5.png" alt="Voiture 10" class="now-image" height="212" width="170">
+                    </div>
+                    <h4 class="now-label">Hybride compacte</h4>
+                    <p class="now-price">€25,000</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="carousel-btn carousel-next" (click)="nextNowSlide()" [disabled]="isNowNextDisabled()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+        </button>
+    </div>
+</section>
