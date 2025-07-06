@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ApiService } from 'src/app/services/api.service';
+import { Router } from '@angular/router';
 
 interface FileWithPreview {
   file: File;
@@ -26,7 +27,7 @@ export class NewComponent implements OnInit {
   selectedFiles: FileWithPreview[] = [];
   isDragOver = false;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.apiService.getCategories().subscribe(
@@ -91,6 +92,7 @@ export class NewComponent implements OnInit {
     console.log('Form Validity Check');
     console.log('Title Valid:', this.titleControl.valid);
     console.log('Category Valid:', this.categoryControl.valid);
+    console.log('Category Valid:', this.categoryControl.value);
     console.log('Image Valid:', this.imageControl.valid);
     console.log('Location Valid:', this.locationControl.valid);
     console.log('Price Valid:', this.priceControl.valid);
@@ -122,6 +124,7 @@ export class NewComponent implements OnInit {
         (response) => {
           console.log('API Response:', response);
           // Handle success - maybe redirect or show success message
+          this.router.navigate(['/ads/' + response.id]); // Redirect to home after successful submission
         },
         (error) => {
           console.error('API Error:', error);

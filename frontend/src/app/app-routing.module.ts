@@ -9,6 +9,7 @@ import { NewComponent } from './components/new/new.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 import { OtpComponent } from './components/otp/otp.component';
 import { authGuard } from './guards/auth.guard';
+import { AdComponent } from './components/ad/ad.component';
 
 // Define routes
 // const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
       { path: '', component: ListingsComponent },
       { path: 'home', component: HomeComponent },
       { path: 'favorites', component: FavorisComponent },
+      { path: 'ads/:id', component: AdComponent },
       { path: 'new', component: NewComponent },
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

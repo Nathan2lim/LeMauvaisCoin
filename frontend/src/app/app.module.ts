@@ -19,7 +19,8 @@ import { FavorisComponent } from './components/favoris/favoris.component';
 import { NewComponent } from './components/new/new.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
-import { OtpComponent } from './components/otp/otp.component'
+import { OtpComponent } from './components/otp/otp.component';
+import { AdComponent } from './components/ad/ad.component'
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { OtpComponent } from './components/otp/otp.component'
     NewComponent,
     FooterComponent,
     MainLayoutComponent,
-    OtpComponent
+    OtpComponent,
+    AdComponent
   ],
   imports: [
     BrowserModule,
