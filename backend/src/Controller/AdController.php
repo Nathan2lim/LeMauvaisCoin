@@ -30,7 +30,7 @@ class AdController extends AbstractController
         $this->uploadsDirectory = 'public/uploads';
     }
 
-#[Route('/ads', name: 'api_ads_post', methods: ['POST'])]
+#[Route('/api/ads', name: 'api_ads_post', methods: ['POST'])]
 public function createAd(Request $request): JsonResponse
 {
     try {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+
+  constructor(private router: Router) {}
   // Carousel catégories
   currentSlide = 0;
   slideWidth = 200; // largeur d'une slide (180px) + gap (20px)
@@ -17,6 +20,12 @@ export class HomeComponent {
   nowSlideWidth = 190; // largeur d'une slide (170px) + gap (20px)
   totalNowSlides = 12; // nombre total de slides
   visibleNowSlides = 5; // nombre de slides visibles à la fois
+  
+
+
+  goToNew(): void {
+    this.router.navigate(['/new']);
+  }
 
   // Méthodes pour le carousel catégories
   nextSlide() {

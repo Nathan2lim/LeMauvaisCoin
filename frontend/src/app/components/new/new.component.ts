@@ -110,7 +110,6 @@ export class NewComponent implements OnInit {
     if (this.isFormValid) {
       const files = this.selectedFiles.map(fileWithPreview => fileWithPreview.file);
       
-      this.apiService.setUserToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTE0NjMyNzMsImV4cCI6MTc1MTQ2Njg3Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiZW1haWxAZW1haWwuY29tIn0.cKQG9Jdcp-JUFq3ocUdfc48VWdUC_rP5IGbPBQTChqrHXem5Uksz5Xzxcm6o7q1Oio6sCtos-GqYeAMJeEII1aNaKv3KS46SRx1b1nZAwjKbTN67WkkOHNklYwVz7JF93l6KfxVZh7b0Nrf2A4eEaypFVsQKRyBdzeiPN1DwJhWxawQ2LER6doPtfMsj_aGZwY7qhQVunWbDkOrUOtlEIJz_PGV-3CXHsCrfVQq4lfLYt2FJJS-P8XzzRXw2wsojfJ8x1oTr35w46wTkz_sUvBF7Bc-gDq9gaCkGJ41xu6UfOu5a4YF1sfiNGA4SQM02pD-VXHgnLoQfx4Klw2CYjr0skCbTL8YWJxz4d14-LqxUMLNrgEzmrDCjbRSbBjnZtyg9kLgGA9rZ7DyLLr047p0i3wrLksJz3_US8czdgM-ur0JiT4szBjKNHNejmlJEpNd7TjOq357PsLfewIYzTBzIUtrrQqdHZ_2duSMwq-fgOLNbzM6lgxZMdFzvX95uAuZjmZVRHNErijGixW3Wn6tRoRU8ITgmHmOBdmb875sHiHWm0rkI88w5-qLQTX2CZlbRE-G6VX6OGrBFHX-ySIi3_Gst0uc4BhZShovutjnCfMFgORrTNJDU8zHwJVpoMsGkelHx6zdgV4L8SSkOcSqkaj-Y5eIPNk2wmbbN_yA'); // Set the user token if needed
       this.apiService.postNewListing(
         {
           title: this.titleControl.value,

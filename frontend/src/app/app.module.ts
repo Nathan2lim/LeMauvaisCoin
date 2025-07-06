@@ -20,7 +20,8 @@ import { NewComponent } from './components/new/new.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 import { OtpComponent } from './components/otp/otp.component';
-import { AdComponent } from './components/ad/ad.component'
+import { AdComponent } from './components/ad/ad.component';
+import { SearchPageComponent } from './components/search-page/search-page.component'
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { AdComponent } from './components/ad/ad.component'
     FooterComponent,
     MainLayoutComponent,
     OtpComponent,
-    AdComponent
+    AdComponent,
+    SearchPageComponent
   ],
   imports: [
     BrowserModule,

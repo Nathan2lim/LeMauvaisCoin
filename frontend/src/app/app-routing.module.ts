@@ -10,6 +10,7 @@ import { MainLayoutComponent } from './components/layout/main-layout/main-layout
 import { OtpComponent } from './components/otp/otp.component';
 import { authGuard } from './guards/auth.guard';
 import { AdComponent } from './components/ad/ad.component';
+import { SearchPageComponent } from './components/search-page/search-page.component';
 
 // Define routes
 // const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'favorites', component: FavorisComponent },
       { path: 'ads/:id', component: AdComponent },
+      { path: 'search', component: SearchPageComponent },
       { path: 'new', component: NewComponent },
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

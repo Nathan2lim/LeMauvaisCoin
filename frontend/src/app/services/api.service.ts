@@ -64,10 +64,8 @@ export class ApiService {
       formData.append('images[]', file, file.name);
     });
 
-    const headers: any = {};
-    if (this.userToken) {
-      headers['Authorization'] = `Bearer ${this.userToken}`;
-    }
+    const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
+
 
     return this.http.post(`${this.apiUrl}/ads`, formData, { headers });
   }
@@ -81,5 +79,13 @@ export class ApiService {
   getUserInfo(): Observable<any> {
     const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
     return this.http.get(`${this.apiUrl}/me`, { headers });
+  }
+
+  getSearchResults(query: string): Observable<any> {
+    const headers = { 'Authorization': `Bearer ${this.getUserToken()}` };
+    return this.http.get(`${this.apiUrl}/search`, {
+      headers,
+      params: { q: query }
+    });
   }
 }

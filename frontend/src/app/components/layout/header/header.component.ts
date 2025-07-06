@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+
+  searchQuery: string = '';
+
   constructor(private router: Router) {
 
   }
@@ -14,6 +17,26 @@ export class HeaderComponent {
   goToNew(): void {
     this.router.navigate(['/new']);
   }
+  goToHome(): void {
+    this.router.navigate(['/home']);
+  }
 
+  goToSearch(): void {
+    if (!this.searchQuery.trim()) {
+      // If search query is empty, do not navigate
+      return;
+    }
+    const currentUrl = this.router.url;
+    const isOnSearchPage = currentUrl.includes('/search');
+    
+    if (isOnSearchPage) {
+      // Force reload by navigating to a dummy route then back
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+      });
+    } else {
+      this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+    }
+  }
 
 }
