@@ -43,14 +43,15 @@ import { ApiService } from '../services/api.service';
       <div class="listings-grid" *ngIf="!loading && !error">
         <div *ngFor="let listing of listings" class="listing-card">
           <div class="listing-image">
-            <div class="placeholder-image">{{ listing.title[0] }}</div>
+            <img *ngIf="listing.images && listing.images.length > 0" [src]="listing.images[0].url" alt="{{ listing.title }}" class="listing-img">
+            <div *ngIf="!listing.images || listing.images.length === 0" class="placeholder-image">{{ listing.title[0] }}</div>
           </div>
           <div class="listing-content">
             <h3>{{ listing.title }}</h3>
             <p class="description">{{ listing.description }}</p>
             <div class="listing-footer">
               <p class="price">{{ listing.price }}€</p>
-              <p class="date">{{ formatDate(listing.created_at) }}</p>
+              <p class="date">{{ formatDate(listing.publishedAt || listing.created_at || listing.createdAt) }}</p>
             </div>
             <button class="contact-button">Contacter le vendeur</button>
           </div>
@@ -128,6 +129,12 @@ import { ApiService } from '../services/api.service';
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .listing-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
     
     .placeholder-image {
@@ -327,7 +334,7 @@ export class ListingsComponent implements OnInit {
     
     this.apiService.getListings().subscribe(
       (data: any) => {
-        this.listings = data || [];
+        this.listings = (data && data['hydra:member']) ? data['hydra:member'] : (data || []);
         this.loading = false;
       },
       (error: any) => {
