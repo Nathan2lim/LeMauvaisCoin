@@ -11,6 +11,7 @@ import { OtpComponent } from './components/otp/otp.component';
 import { authGuard } from './guards/auth.guard';
 import { AdComponent } from './components/ad/ad.component';
 import { SearchPageComponent } from './components/search-page/search-page.component';
+import { AboutComponent } from './components/about/about.component';
 
 // Define routes
 // const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
       { path: 'favorites', component: FavorisComponent },
       { path: 'ads/:id', component: AdComponent },
       { path: 'search', component: SearchPageComponent },
+      { path: 'about', component: AboutComponent },
       { path: 'new', component: NewComponent },
       { path: '**', redirectTo: 'home', pathMatch: 'full' },
     ]

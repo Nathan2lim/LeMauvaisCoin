@@ -21,7 +21,8 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { MainLayoutComponent } from './components/layout/main-layout/main-layout.component';
 import { OtpComponent } from './components/otp/otp.component';
 import { AdComponent } from './components/ad/ad.component';
-import { SearchPageComponent } from './components/search-page/search-page.component'
+import { SearchPageComponent } from './components/search-page/search-page.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { SearchPageComponent } from './components/search-page/search-page.compon
     MainLayoutComponent,
     OtpComponent,
     AdComponent,
-    SearchPageComponent
+    SearchPageComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
