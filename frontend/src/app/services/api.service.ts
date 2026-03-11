@@ -34,9 +34,9 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/status`, { headers });
   }
   
-  // Example method for future listings functionality
+  // Retrieve ads from the API
   getListings(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/listings`);
+    return this.http.get(`${this.apiUrl}/ads`);
   }
 
   login(email: string, password: string): Observable<any> {
